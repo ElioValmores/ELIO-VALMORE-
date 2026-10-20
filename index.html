@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votaciones - Liceo Elio Valmore Castellano</title>
+    <title>Votaciones Realtime - Liceo Elio Valmore Castellano</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -56,19 +56,28 @@
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Liceo Elio Valmores Castellano</h1>
+                    <h1 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Liceo Elio Valmore Castellano</h1>
                     <div class="flex items-center space-x-2">
                         <span class="text-xs text-sky-600 font-semibold tracking-wide">PROMO XXXV</span>
                         <span class="text-[10px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-full border border-sky-200"><i class="fa-solid fa-code text-[9px] mr-1"></i> Hearry Silva</span>
                     </div>
                 </div>
             </div>
-            <div id="userBadge" class="hidden flex items-center space-x-2 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-full text-xs text-sky-800 font-medium">
-                <i class="fa-solid fa-user-check text-sky-600"></i>
-                <span id="badgeUserName">Cargando...</span>
-                <button onclick="logoutUser()" class="ml-2 text-rose-500 hover:text-rose-700 font-bold text-xs" title="Cerrar sesión">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </button>
+            
+            <div class="flex items-center space-x-2">
+                <!-- Indicador de Conexión Firebase -->
+                <div id="syncBadge" class="flex items-center space-x-1.5 bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full text-[11px] font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    <span id="syncStatusText">Conectando...</span>
+                </div>
+
+                <div id="userBadge" class="hidden flex items-center space-x-2 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-full text-xs text-sky-800 font-medium">
+                    <i class="fa-solid fa-user-check text-sky-600"></i>
+                    <span id="badgeUserName">Cargando...</span>
+                    <button onclick="logoutUser()" class="ml-2 text-rose-500 hover:text-rose-700 font-bold text-xs" title="Cerrar sesión">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -90,7 +99,6 @@
 
         <!-- 1. PANTALLA DE INICIO -->
         <section id="viewHome" class="flex flex-col items-center justify-center py-10 md:py-16 text-center space-y-8">
-            <!-- Logo Centrado Grandes Dimensiones -->
             <div class="relative">
                 <div class="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-tr from-sky-500 to-sky-300 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
                     <i class="fa-solid fa-school text-white text-6xl md:text-7xl"></i>
@@ -168,11 +176,11 @@
 
                     <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start space-x-2 text-xs text-amber-800">
                         <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5"></i>
-                        <span>Protección Antifraude: Este teléfono o computadora quedará vinculado permanentemente a tu estudiante. No se permitirá crear otra cuenta desde este equipo.</span>
+                        <span>Protección Antifraude: Este equipo quedará vinculado a tu estudiante para evitar dobles votaciones.</span>
                     </div>
 
-                    <button type="submit" class="w-full py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-md transition">
-                        Ingresar a la Votación
+                    <button type="submit" id="btnSubmitRegister" class="w-full py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-md transition flex justify-center items-center">
+                        <span>Ingresar a la Votación</span>
                     </button>
                 </form>
             </div>
@@ -195,7 +203,6 @@
                         </h2>
                         <p class="text-sky-100 text-xs md:text-sm">Elige entre la Chaqueta o el Chemis. Puedes cambiar tu opinión libremente mientras la votación siga abierta.</p>
                     </div>
-                    <!-- Logo Escolar en la Esquina -->
                     <div class="w-20 h-20 md:w-24 md:h-24 bg-white rounded-2xl flex-shrink-0 flex items-center justify-center p-2 shadow-lg border-2 border-sky-300">
                         <i class="fa-solid fa-school text-sky-600 text-4xl md:text-5xl"></i>
                     </div>
@@ -228,7 +235,6 @@
                 <!-- OPCIÓN 1: CHAQUETA -->
                 <div id="cardChaqueta" class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100 hover:border-sky-300 transition flex flex-col justify-between space-y-4 relative overflow-hidden">
                     <div class="space-y-4">
-                        <!-- Placeholder/Foto Chaqueta -->
                         <div class="w-full h-48 bg-slate-100 rounded-2xl overflow-hidden relative group flex items-center justify-center border border-slate-200">
                             <img id="imgChaqueta" src="https://placehold.co/600x400/0284c7/ffffff?text=Chaqueta+Promo+XXXV" alt="Chaqueta Promo" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition"></div>
@@ -242,9 +248,8 @@
                             </span>
                         </div>
 
-                        <!-- Párrafo Informativo / Argumentos (Exactamente 5 líneas informativas) -->
                         <div class="bg-sky-50/60 p-4 rounded-2xl border border-sky-100 text-xs md:text-sm text-slate-700 leading-relaxed">
-                            La chaqueta promocional brinda un aspecto mucho más elegante y distintivo para destacar con presencia en cada actividad institucional del liceo. Ofrece una durabilidad superior durante todo el año escolar, protegiendo contra el clima cambiante con abrigo y comodidad. Su diseño acolchado permite bordar con mayor detalle los logos conmemorativos, nombres e insignias especiales de la Promo XXXV. Además, se conserva impecable con el paso de los años como un recuerdo físico duradero e icónico para toda la vida. Representa la imagen clásica, sobria y de verdadero impacto representativo que todo graduando sueña luciendo con orgullo.
+                            La chaqueta promocional brinda un aspecto mucho más elegante y distintivo para destacar con presencia en cada actividad institucional del liceo. Ofrece una durabilidad superior durante todo el año escolar, protegiendo contra el clima cambiante con abrigo y comodidad. Su diseño acolchado permite bordar con mayor detalle los logos conmemorativos, nombres e insignias especiales de la Promo XXXV. Además, se conserva impecable con el paso de los años como un recuerdo físico duradero e icónico para toda la vida.
                         </div>
                     </div>
 
@@ -257,7 +262,6 @@
                 <!-- OPCIÓN 2: CHEMIS -->
                 <div id="cardChemis" class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100 hover:border-emerald-300 transition flex flex-col justify-between space-y-4 relative overflow-hidden">
                     <div class="space-y-4">
-                        <!-- Placeholder/Foto Chemis -->
                         <div class="w-full h-48 bg-slate-100 rounded-2xl overflow-hidden relative group flex items-center justify-center border border-slate-200">
                             <img id="imgChemis" src="https://placehold.co/600x400/059669/ffffff?text=Chemis+Promo+XXXV" alt="Chemis Promo" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition"></div>
@@ -271,9 +275,8 @@
                             </span>
                         </div>
 
-                        <!-- Párrafo Informativo / Argumentos (Exactamente 5 líneas informativas) -->
                         <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100 text-xs md:text-sm text-slate-700 leading-relaxed">
-                            La chemise es una prenda fresca, ligera y sumamente cómoda, perfecta para adaptarse al clima cálido cotidiano en las aulas del liceo. Facilita una movilidad total y libertad en el día a día sin causar sofoco térmico durante las jornadas de clases e intercursos. Su costo de confección suele ser más accesible para el presupuesto de todas las familias, facilitando la adquisición uniforme. Permite lucir un estilo deportivo, moderno y juvenil con cuello tejido y bordados impecables que lucen siempre geniales. Es la alternativa ideal, práctica y versátil para usar rutinariamente en cada evento de nuestra inolvidable graduación.
+                            La chemise es una prenda fresca, ligera y sumamente cómoda, perfecta para adaptarse al clima cálido cotidiano en las aulas del liceo. Facilita una movilidad total y libertad en el día a día sin causar sofoco térmico durante las jornadas de clases e intercursos. Su costo de confección suele ser más accesible para el presupuesto de todas las familias, facilitando la adquisición uniforme.
                         </div>
                     </div>
 
@@ -302,7 +305,7 @@
             <div class="bg-white rounded-3xl p-6 shadow-md border border-sky-100 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div class="flex items-center space-x-2">
-                        <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <div id="chatLiveDot" class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                         <h3 class="font-bold text-slate-800 text-base">Nube de Chat / Debate en Vivo</h3>
                     </div>
                     <span id="chatStatusBadge" class="text-xs px-2.5 py-1 rounded-full font-semibold bg-emerald-100 text-emerald-700">Chat Activo</span>
@@ -310,7 +313,7 @@
 
                 <!-- Mensajes del Chat -->
                 <div id="chatMessages" class="h-64 overflow-y-auto space-y-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                    <!-- Los mensajes se cargan dinámicamente -->
+                    <div class="text-center text-xs text-slate-400 py-4">Cargando mensajes en tiempo real...</div>
                 </div>
 
                 <!-- Input de Enviar Mensaje -->
@@ -320,15 +323,6 @@
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
-            </div>
-
-            <!-- BOTÓN CONTINUAR (Deshabilitado temporalmente) -->
-            <div class="pt-4 pb-8 text-center">
-                <button disabled class="w-full md:w-auto px-10 py-4 bg-slate-300 text-slate-500 font-bold rounded-2xl cursor-not-allowed shadow-none flex items-center justify-center space-x-2 mx-auto">
-                    <span>Continuar</span>
-                    <i class="fa-solid fa-lock text-xs"></i>
-                </button>
-                <p class="text-xs text-slate-400 mt-2">Esta opción no se encuentra habilitada por el momento.</p>
             </div>
 
         </section>
@@ -361,7 +355,7 @@
             <div class="flex items-center justify-between bg-white p-6 rounded-3xl border border-sky-100 shadow-sm">
                 <div>
                     <h2 class="text-2xl font-extrabold text-slate-800">Panel de Control Administrativo</h2>
-                    <p class="text-xs text-slate-500">Gestión de votación, moderación de usuarios y control en tiempo real.</p>
+                    <p class="text-xs text-slate-500">Gestión de votación, moderación de usuarios y control en tiempo real con Firebase.</p>
                 </div>
                 <button onclick="logoutAdmin()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">
                     Salir Admin
@@ -378,7 +372,7 @@
                         </div>
                         <div>
                             <h4 class="font-bold text-sm text-slate-800">Estado Votación</h4>
-                            <span id="adminVoteStatusText" class="text-xs text-emerald-600 font-semibold">Abierta</span>
+                            <span id="adminVoteStatusText" class="text-xs text-emerald-600 font-semibold">Cargando...</span>
                         </div>
                     </div>
                     <button id="btnToggleVoting" onclick="toggleVotingStatus()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs rounded-xl transition">
@@ -394,7 +388,7 @@
                         </div>
                         <div>
                             <h4 class="font-bold text-sm text-slate-800">Estado del Chat</h4>
-                            <span id="adminChatStatusText" class="text-xs text-emerald-600 font-semibold">Activo</span>
+                            <span id="adminChatStatusText" class="text-xs text-emerald-600 font-semibold">Cargando...</span>
                         </div>
                     </div>
                     <button id="btnToggleChat" onclick="toggleChatStatus()" class="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-xl transition">
@@ -406,7 +400,7 @@
                 <div class="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-center space-y-2 text-center">
                     <span class="text-xs font-bold text-slate-500 uppercase">Participación Total</span>
                     <div class="text-3xl font-black text-sky-600" id="adminTotalVotersCount">0</div>
-                    <div class="text-xs text-slate-400">Estudiantes registrados acumulados</div>
+                    <div class="text-xs text-slate-400">Estudiantes registrados en Firebase</div>
                 </div>
             </div>
 
@@ -414,13 +408,13 @@
             <div class="bg-white rounded-3xl p-6 border border-sky-100 shadow-sm space-y-3">
                 <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
                     <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-                    <span>Control Antifraude y Reinicio de Dispositivos</span>
+                    <span>Control Antifraude y Mantenimiento</span>
                 </h3>
-                <p class="text-xs text-slate-500">Si un estudiante cambió de dispositivo o cometió un error al registrarse, puedes resetear los bloqueos de dispositivos o reiniciar las votaciones completas.</p>
+                <p class="text-xs text-slate-500">Acciones globales para restaurar permisos de equipos o reiniciar votaciones registradas.</p>
                 <div class="flex flex-wrap gap-3 pt-2">
                     <button onclick="clearAllDeviceBindings()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl transition flex items-center space-x-2">
                         <i class="fa-solid fa-unlock"></i>
-                        <span>Desbloquear Todos los Dispositivos</span>
+                        <span>Desbloquear Dispositivos</span>
                     </button>
                     <button onclick="resetAllVotes()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl transition flex items-center space-x-2">
                         <i class="fa-solid fa-rotate-left"></i>
@@ -434,7 +428,7 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <h3 class="font-bold text-slate-800 text-lg flex items-center space-x-2">
                         <i class="fa-solid fa-list-check text-sky-600"></i>
-                        <span>Lista de Estudiantes y Votos</span>
+                        <span>Lista Realtime de Estudiantes y Votos</span>
                     </h3>
 
                     <!-- Filtro por Sección -->
@@ -484,12 +478,43 @@
         </p>
     </footer>
 
-    <!-- LÓGICA DE LA APLICACIÓN -->
-    <script>
-        // --- CONSTANTES Y SEGURIDAD ---
+    <!-- LÓGICA CONEXIÓN FIREBASE FIRESTORE REALTIME -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Globales del entorno Firebase
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'evc-votaciones-promo35';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "demo-key",
+            authDomain: "demo.firebaseapp.com",
+            projectId: "demo-project",
+            storageBucket: "demo.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:123456"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Rutas Estrictas de Firestore según especificaciones
+        const USERS_COLLECTION_REF = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+        const CHAT_COLLECTION_REF = collection(db, 'artifacts', appId, 'public', 'data', 'chat');
+        const SETTINGS_DOC_REF = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config');
+
+        // Constante PIN Admin
         const ADMIN_PIN = "38759";
 
-        // Prevenir inyección de código / Sanitizar strings
+        // Estado en memoria sincronizado en tiempo real con Firebase
+        let firebaseAuthUser = null;
+        let users = [];
+        let chatMessages = [];
+        let appSettings = { votingActive: true, chatActive: true };
+        let currentUser = null;
+
+        // Limpiar strings contra XSS
         function sanitizeHTML(str) {
             if (!str) return '';
             return str.replace(/[&<>"']/g, function (m) {
@@ -503,11 +528,10 @@
             });
         }
 
-        // --- GENERADOR DE HUELLA DIGITAL ÚNICA DE DISPOSITIVO (ANTISABOTAJE) ---
+        // Huella digital de dispositivo
         function getDeviceFingerprint() {
             let fp = localStorage.getItem('evc_device_fingerprint');
             if (!fp) {
-                // Crear huella única resistente basada en aleatoriedad y fecha
                 fp = 'DEV_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
                 localStorage.setItem('evc_device_fingerprint', fp);
             }
@@ -516,41 +540,91 @@
 
         const currentDeviceFP = getDeviceFingerprint();
 
-        // --- MANEJO DE ALMACENAMIENTO LOCAL (PERSISTENCIA) ---
-        function getStoredData(key, fallback) {
+        // 1. INICIALIZACIÓN DE AUTENTICACIÓN FIREBASE
+        async function initAuth() {
             try {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : fallback;
-            } catch (e) {
-                return fallback;
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Error autenticando Firebase:", err);
+                // Intento fallback
+                await signInAnonymously(auth).catch(e => console.error("Fallback falló", e));
             }
         }
 
-        function setStoredData(key, data) {
-            try {
-                localStorage.setItem(key, JSON.stringify(data));
-            } catch (e) {
-                console.error("Error guardando en localStorage", e);
+        onAuthStateChanged(auth, (u) => {
+            if (u) {
+                firebaseAuthUser = u;
+                document.getElementById('syncBadge').className = "flex items-center space-x-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full text-[11px] font-semibold";
+                document.getElementById('syncStatusText').textContent = "En vivo (Firebase)";
+                initRealtimeListeners();
+            } else {
+                document.getElementById('syncBadge').className = "flex items-center space-x-1.5 bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-full text-[11px] font-semibold";
+                document.getElementById('syncStatusText').textContent = "Desconectado";
             }
-        }
-
-        // Estado Global Inicial
-        let users = getStoredData('evc_users', []); 
-        // User struct: { id, nombre, apellido, fullNameKey, seccion, vote: null|'Chaqueta'|'Chemis', comment: '', deviceFingerprint: '' }
-
-        let currentUser = getStoredData('evc_current_user', null);
-
-        let chatMessages = getStoredData('evc_chat', [
-            { id: 1, sender: "Comité Promo XXXV", text: "¡Bienvenidos al debate oficial de la Promo XXXV!", time: "08:00 AM", isSystem: true }
-        ]);
-
-        let appSettings = getStoredData('evc_settings', {
-            votingActive: true,
-            chatActive: true
         });
 
-        // --- CONTROL DE NAVEGACIÓN DE VISTAS ---
-        function showView(viewName) {
+        // 2. LISTENERS REALTIME CON ONSNAPSHOT
+        function initRealtimeListeners() {
+            if (!firebaseAuthUser) return;
+
+            // Escuchar Ajustes Globales
+            onSnapshot(SETTINGS_DOC_REF, (docSnap) => {
+                if (docSnap.exists()) {
+                    appSettings = docSnap.data();
+                } else {
+                    // Inicializar si no existe
+                    setDoc(SETTINGS_DOC_REF, appSettings);
+                }
+                updateVotingUI();
+                renderChatMessages();
+                if (!document.getElementById('viewAdmin').classList.contains('hidden')) {
+                    renderAdminDashboard();
+                }
+            }, (err) => console.error("Error escuchando settings:", err));
+
+            // Escuchar Estudiantes / Votos
+            onSnapshot(USERS_COLLECTION_REF, (querySnap) => {
+                users = [];
+                querySnap.forEach((d) => {
+                    users.push({ id: d.id, ...d.data() });
+                });
+
+                // Recuperar sesión persistida activa
+                const savedUserId = localStorage.getItem('evc_session_userid');
+                if (savedUserId) {
+                    const match = users.find(u => u.id === savedUserId);
+                    if (match) currentUser = match;
+                }
+
+                updateUserBadge();
+                checkDeviceBindingOnHome();
+                updateVotingUI();
+
+                if (!document.getElementById('viewAdmin').classList.contains('hidden')) {
+                    renderAdminDashboard();
+                }
+            }, (err) => console.error("Error escuchando usuarios:", err));
+
+            // Escuchar Chat en Vivo
+            onSnapshot(CHAT_COLLECTION_REF, (querySnap) => {
+                chatMessages = [];
+                querySnap.forEach((d) => {
+                    chatMessages.push({ id: d.id, ...d.data() });
+                });
+
+                // Ordenar por tiempo en memoria (Rule 2)
+                chatMessages.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+
+                renderChatMessages();
+            }, (err) => console.error("Error escuchando chat:", err));
+        }
+
+        // 3. VISTAS Y NAVEGACIÓN
+        window.showView = function(viewName) {
             document.getElementById('viewHome').classList.add('hidden');
             document.getElementById('viewRegister').classList.add('hidden');
             document.getElementById('viewVoting').classList.add('hidden');
@@ -571,9 +645,8 @@
             }
 
             updateUserBadge();
-        }
+        };
 
-        // Verifica si el dispositivo físico actual ya tiene un estudiante registrado
         function checkDeviceBindingOnHome() {
             const boundNotice = document.getElementById('deviceBoundNotice');
             const boundText = document.getElementById('deviceBoundUserText');
@@ -588,7 +661,6 @@
             }
         }
 
-        // --- MANEJO DE USUARIO BADGE Y SESIÓN ---
         function updateUserBadge() {
             const badge = document.getElementById('userBadge');
             const badgeName = document.getElementById('badgeUserName');
@@ -601,55 +673,51 @@
             }
         }
 
-        function logoutUser() {
+        window.logoutUser = function() {
             currentUser = null;
-            localStorage.removeItem('evc_current_user');
-            showModal("Sesión Cerrada", "Has salido de tu cuenta escolar. Tu dispositivo sigue vinculado a tu cuenta registrada.");
+            localStorage.removeItem('evc_session_userid');
+            updateUserBadge();
+            showModal("Sesión Cerrada", "Has salido de tu cuenta escolar.");
             showView('home');
-        }
+        };
 
-        // --- BOTÓN PRINCIPAL "VOTAR" CON VERIFICACIÓN ANTISABOTAJE DE DISPOSITIVO ---
-        function handleVotarClick() {
-            // 1. Si hay una sesión activa, cargar usuario
+        window.handleVotarClick = function() {
             if (currentUser) {
                 const freshUser = users.find(u => u.id === currentUser.id);
                 if (freshUser) {
                     currentUser = freshUser;
-                    setStoredData('evc_current_user', currentUser);
                     showView('voting');
                     return;
-                } else {
-                    currentUser = null;
-                    localStorage.removeItem('evc_current_user');
                 }
             }
 
-            // 2. Si se cerró sesión pero el dispositivo YA ESTÁ VINCULADO a una cuenta
             const boundUser = users.find(u => u.deviceFingerprint === currentDeviceFP);
             if (boundUser) {
-                // Restaurar automáticamente la cuenta del dispositivo para evitar crear otra
                 currentUser = boundUser;
-                setStoredData('evc_current_user', currentUser);
-                showModal("Acceso Restablecido", `Bienvenido de nuevo ${boundUser.nombre}. Se ha iniciado sesión con la cuenta vinculada a este equipo.`);
+                localStorage.setItem('evc_session_userid', boundUser.id);
+                updateUserBadge();
+                showModal("Acceso Restablecido", `Bienvenido ${boundUser.nombre}. Se ha recuperado la sesión de tu equipo.`);
                 showView('voting');
                 return;
             }
 
-            // 3. Dispositivo limpio sin cuenta registrada previamente -> Ir al registro
             showView('register');
-        }
+        };
 
-        // --- REGISTRO STRICTO Y VINCULACIÓN DE DISPOSITIVO ---
-        function submitRegistration(e) {
+        // 4. REGISTRO EN FIRESTORE
+        window.submitRegistration = async function(e) {
             e.preventDefault();
 
-            // Bloqueo directo de dispositivo si ya existe una cuenta vinculada a este equipo
+            if (!firebaseAuthUser) {
+                showModal("Sin Conexión", "Aún nos estamos conectando con el servidor de Firebase. Intenta en un segundo.");
+                return;
+            }
+
             const existingDeviceUser = users.find(u => u.deviceFingerprint === currentDeviceFP);
             if (existingDeviceUser) {
-                showModal("Dispositivo Ya Registrado", `Este equipo ya registró al estudiante "${existingDeviceUser.nombre} ${existingDeviceUser.apellido}". No es posible registrar múltiples cuentas desde la misma computadora o teléfono.`);
-                
+                showModal("Dispositivo Ya Registrado", `Este equipo ya registró al estudiante "${existingDeviceUser.nombre} ${existingDeviceUser.apellido}". No es posible duplicar registros desde el mismo equipo.`);
                 currentUser = existingDeviceUser;
-                setStoredData('evc_current_user', currentUser);
+                localStorage.setItem('evc_session_userid', currentUser.id);
                 showView('voting');
                 return;
             }
@@ -659,101 +727,97 @@
             const seccion = document.getElementById('regSeccion').value;
 
             if (!rawNombre || !rawApellido || !seccion) {
-                showModal("Campos Incompletos", "Por favor completa tu Nombre, Apellido y Sección.");
+                showModal("Campos Incompletos", "Por favor ingresa Nombre, Apellido y Sección.");
                 return;
             }
 
-            // Sanitizado
             const nombre = sanitizeHTML(rawNombre);
             const apellido = sanitizeHTML(rawApellido);
-            
-            // Clave única de Nombre + Apellido limpia de espacios extra
-            const cleanNombreKey = nombre.toLowerCase().replace(/\s+/g, ' ');
-            const cleanApellidoKey = apellido.toLowerCase().replace(/\s+/g, ' ');
-            const fullNameKey = `${cleanNombreKey} ${cleanApellidoKey}`;
+            const fullNameKey = `${nombre.toLowerCase().replace(/\s+/g, ' ')} ${apellido.toLowerCase().replace(/\s+/g, ' ')}`;
 
-            // Validación estricta 1: Nombre + Apellido Duplicado en el liceo
             const duplicateName = users.find(u => u.fullNameKey === fullNameKey);
             if (duplicateName) {
-                showModal("Estudiante Ya Registrado", `El nombre "${nombre} ${apellido}" ya existe en las listas de la votación. Si eres este estudiante, ingresa desde el dispositivo desde el que te registraste.`);
+                showModal("Estudiante Ya Registrado", `El estudiante "${nombre} ${apellido}" ya existe registrado. Si eres tú, conéctate desde el dispositivo donde realizaste el registro.`);
                 return;
             }
 
-            // Crear nuevo usuario con vinculación de huella de dispositivo
+            const userId = 'usr_' + Date.now() + '_' + Math.floor(Math.random()*1000);
             const newUser = {
-                id: 'usr_' + Date.now() + '_' + Math.floor(Math.random()*1000),
                 nombre: nombre,
                 apellido: apellido,
                 fullNameKey: fullNameKey,
                 seccion: seccion,
                 vote: null,
                 comment: '',
-                deviceFingerprint: currentDeviceFP
+                deviceFingerprint: currentDeviceFP,
+                createdAt: Date.now()
             };
 
-            users.push(newUser);
-            setStoredData('evc_users', users);
+            try {
+                // Guardar en Firestore
+                await setDoc(doc(USERS_COLLECTION_REF, userId), newUser);
 
-            // Iniciar sesión y guardar persistencia
-            currentUser = newUser;
-            setStoredData('evc_current_user', currentUser);
+                currentUser = { id: userId, ...newUser };
+                localStorage.setItem('evc_session_userid', userId);
+                updateUserBadge();
 
-            showModal("¡Registro Completado!", `Bienvenido ${nombre} ${apellido} (${seccion}). Este dispositivo ha sido vinculado correctamente a tu usuario.`);
-            showView('voting');
-        }
+                showModal("¡Registro Exitoso!", `Bienvenido ${nombre} ${apellido} (${seccion}). Tu dispositivo ha quedado registrado en Firebase.`);
+                showView('voting');
+            } catch (err) {
+                console.error("Error guardando estudiante en Firebase:", err);
+                showModal("Error", "No se pudo registrar en la base de datos. Inténtalo de nuevo.");
+            }
+        };
 
-        // --- PROCESO DE VOTACIÓN ---
-        function vote(option) {
+        // 5. EMISIÓN DE VOTOS EN TIEMPO REAL
+        window.vote = async function(option) {
             if (!appSettings.votingActive) {
-                showModal("Votación Pausada", "Las votaciones se encuentran cerradas temporalmente por la administración.");
+                showModal("Votaciones Pausadas", "Las votaciones han sido suspendidas temporalmente.");
                 return;
             }
 
             if (!currentUser) {
-                showModal("Error", "Debes estar registrado para poder votar.");
+                showModal("Identificación Requerida", "Debes registrarte antes de emitir tu voto.");
                 showView('register');
                 return;
             }
 
-            // Actualizar usuario en lista
-            const userIdx = users.findIndex(u => u.id === currentUser.id);
-            if (userIdx !== -1) {
-                users[userIdx].vote = option;
+            try {
+                const userDocRef = doc(USERS_COLLECTION_REF, currentUser.id);
+                await updateDoc(userDocRef, {
+                    vote: option
+                });
+
                 currentUser.vote = option;
-
-                setStoredData('evc_users', users);
-                setStoredData('evc_current_user', currentUser);
-
-                // Mostrar sección de comentario opcional
-                document.getElementById('commentBoxSection').classList.remove('hidden');
-
-                showModal("¡Voto Registrado!", `Has elegido la opción: ${option}. Puedes cambiar de opinión en cualquier momento si lo deseas.`);
+                showModal("¡Voto Guardado!", `Has seleccionado: ${option}. Se ha actualizado en tiempo real en la base de datos.`);
                 updateVotingUI();
+            } catch (err) {
+                console.error("Error registrando voto en Firebase:", err);
+                showModal("Error", "No se pudo registrar el voto. Revisa tu conexión.");
             }
-        }
+        };
 
-        function saveVoteComment() {
+        window.saveVoteComment = async function() {
             const rawComment = document.getElementById('voteCommentInput').value.trim();
-            if (!rawComment) return;
+            if (!rawComment || !currentUser) return;
 
             const sanitizedComment = sanitizeHTML(rawComment);
 
-            const userIdx = users.findIndex(u => u.id === currentUser.id);
-            if (userIdx !== -1) {
-                users[userIdx].comment = sanitizedComment;
+            try {
+                const userDocRef = doc(USERS_COLLECTION_REF, currentUser.id);
+                await updateDoc(userDocRef, {
+                    comment: sanitizedComment
+                });
+
                 currentUser.comment = sanitizedComment;
-
-                setStoredData('evc_users', users);
-                setStoredData('evc_current_user', currentUser);
-
-                document.getElementById('currentCommentDisplay').textContent = `Tu razón guardada: "${sanitizedComment}"`;
-                showModal("Comentario Guardado", "Gracias por aportar tu motivo al debate.");
+                document.getElementById('currentCommentDisplay').textContent = `Tu comentario: "${sanitizedComment}"`;
+                showModal("Comentario Guardado", "Se envió tu aporte al servidor de la votación.");
+            } catch (err) {
+                console.error("Error guardando comentario:", err);
             }
-        }
+        };
 
-        // ACTUALIZACIÓN DE UI DE VOTACIÓN Y CONTEO
         function updateVotingUI() {
-            // Contadores Exactos
             let countChaqueta = 0;
             let countChemis = 0;
 
@@ -773,7 +837,7 @@
             document.getElementById('statPercentChaqueta').textContent = `${percChaqueta}% del total`;
             document.getElementById('statPercentChemis').textContent = `${percChemis}% del total`;
 
-            // Resaltar elección del usuario
+            // Resaltar elección
             const cardChaqueta = document.getElementById('cardChaqueta');
             const cardChemis = document.getElementById('cardChemis');
             const badgeChaqueta = document.getElementById('badgeYourVoteChaqueta');
@@ -804,7 +868,6 @@
                 pausedBanner.classList.add('hidden');
             }
 
-            // Comentario guardado previo
             if (currentUser && currentUser.vote) {
                 document.getElementById('commentBoxSection').classList.remove('hidden');
                 if (currentUser.comment) {
@@ -815,10 +878,14 @@
             }
         }
 
-        // --- CHAT DE DEBATE EN VIVO ---
+        // 6. CHAT DE DEBATE EN TIEMPO REAL
         function renderChatMessages() {
             const chatContainer = document.getElementById('chatMessages');
             chatContainer.innerHTML = '';
+
+            if (chatMessages.length === 0) {
+                chatContainer.innerHTML = '<div class="text-center text-xs text-slate-400 py-6">Inicia el debate compartiendo tu opinión respetuosamente.</div>';
+            }
 
             chatMessages.forEach(msg => {
                 const msgDiv = document.createElement('div');
@@ -839,10 +906,8 @@
                 chatContainer.appendChild(msgDiv);
             });
 
-            // Auto-scroll abajo
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            // Estado del chat
             const chatStatusBadge = document.getElementById('chatStatusBadge');
             const btnSendChat = document.getElementById('btnSendChat');
             const chatInput = document.getElementById('chatInput');
@@ -851,7 +916,7 @@
                 chatStatusBadge.textContent = 'Chat Silenciado';
                 chatStatusBadge.className = 'text-xs px-2.5 py-1 rounded-full font-semibold bg-rose-100 text-rose-700';
                 chatInput.disabled = true;
-                chatInput.placeholder = 'El chat ha sido deshabilitado temporalmente...';
+                chatInput.placeholder = 'El chat fue silenciado por los administradores...';
                 btnSendChat.disabled = true;
                 btnSendChat.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
@@ -864,16 +929,16 @@
             }
         }
 
-        function sendChatMessage(e) {
+        window.sendChatMessage = async function(e) {
             e.preventDefault();
 
             if (!appSettings.chatActive) {
-                showModal("Chat Silenciado", "La administración ha desactivado el chat temporalmente.");
+                showModal("Chat Desactivado", "El chat está deshabilitado.");
                 return;
             }
 
             if (!currentUser) {
-                showModal("Inicia Sesión", "Debes identificarte antes de escribir en el chat.");
+                showModal("Inicia Sesión", "Debes registrarte para enviar mensajes.");
                 return;
             }
 
@@ -885,32 +950,35 @@
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+            const msgId = 'msg_' + Date.now();
             const newMsg = {
-                id: Date.now(),
                 sender: `${currentUser.nombre} ${currentUser.apellido} (${currentUser.seccion})`,
                 text: sanitizeHTML(rawText),
                 time: timeStr,
+                createdAt: Date.now(),
                 isSystem: false
             };
 
-            chatMessages.push(newMsg);
-            setStoredData('evc_chat', chatMessages);
-
             input.value = '';
-            renderChatMessages();
-        }
 
-        // --- MÓDULO DE ADMINISTRACIÓN (PIN 38759) ---
-        function openAdminAuthModal() {
+            try {
+                await setDoc(doc(CHAT_COLLECTION_REF, msgId), newMsg);
+            } catch (err) {
+                console.error("Error al enviar mensaje:", err);
+            }
+        };
+
+        // 7. ADMINISTRACIÓN CONTROL REALTIME
+        window.openAdminAuthModal = function() {
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('adminAuthModal').classList.remove('hidden');
-        }
+        };
 
-        function closeAdminAuthModal() {
+        window.closeAdminAuthModal = function() {
             document.getElementById('adminAuthModal').classList.add('hidden');
-        }
+        };
 
-        function verifyAdminPassword(e) {
+        window.verifyAdminPassword = function(e) {
             e.preventDefault();
             const pin = document.getElementById('adminPasswordInput').value;
 
@@ -918,16 +986,15 @@
                 closeAdminAuthModal();
                 showView('admin');
             } else {
-                showModal("Contraseña Incorrecta", "La clave de acceso ingresada es incorrecta.");
+                showModal("Acceso Denegado", "Clave de administrador incorrecta.");
             }
-        }
+        };
 
-        function logoutAdmin() {
+        window.logoutAdmin = function() {
             showView('home');
-        }
+        };
 
         function renderAdminDashboard() {
-            // Actualizar textos de botones
             const statusText = document.getElementById('adminVoteStatusText');
             const btnToggleVoting = document.getElementById('btnToggleVoting');
 
@@ -959,51 +1026,60 @@
             }
 
             document.getElementById('adminTotalVotersCount').textContent = users.length;
-
-            renderAdminVoterList();
+            window.renderAdminVoterList();
         }
 
-        function toggleVotingStatus() {
-            appSettings.votingActive = !appSettings.votingActive;
-            setStoredData('evc_settings', appSettings);
-            renderAdminDashboard();
-            showModal("Ajuste Actualizado", appSettings.votingActive ? "Las votaciones se han reabierto." : "Las votaciones se han pausado.");
-        }
-
-        function toggleChatStatus() {
-            appSettings.chatActive = !appSettings.chatActive;
-            setStoredData('evc_settings', appSettings);
-            renderAdminDashboard();
-            showModal("Chat Actualizado", appSettings.chatActive ? "El chat de debate ha sido activado." : "El chat de debate ha sido silenciado.");
-        }
-
-        function clearAllDeviceBindings() {
-            users.forEach(u => {
-                u.deviceFingerprint = 'RESET_BY_ADMIN';
-            });
-            setStoredData('evc_users', users);
-            localStorage.removeItem('evc_device_fingerprint');
-            showModal("Dispositivos Desbloqueados", "Se han liberado todas las vinculaciones de dispositivos. Los estudiantes pueden volver a vincular sus equipos.");
-            renderAdminDashboard();
-        }
-
-        function resetAllVotes() {
-            users.forEach(u => {
-                u.vote = null;
-                u.comment = '';
-            });
-            setStoredData('evc_users', users);
-            if (currentUser) {
-                currentUser.vote = null;
-                currentUser.comment = '';
-                setStoredData('evc_current_user', currentUser);
+        window.toggleVotingStatus = async function() {
+            const newStatus = !appSettings.votingActive;
+            try {
+                await updateDoc(SETTINGS_DOC_REF, { votingActive: newStatus });
+                showModal("Ajuste Actualizado", newStatus ? "Votaciones Reabiertas" : "Votaciones Pausadas");
+            } catch (err) {
+                console.error("Error alternando votaciones:", err);
             }
-            showModal("Votación Reiniciada", "Se han puesto a cero todos los votos y comentarios.");
-            renderAdminDashboard();
-        }
+        };
 
-        function renderAdminVoterList() {
+        window.toggleChatStatus = async function() {
+            const newChat = !appSettings.chatActive;
+            try {
+                await updateDoc(SETTINGS_DOC_REF, { chatActive: newChat });
+                showModal("Chat Actualizado", newChat ? "Chat de Debate Activado" : "Chat de Debate Silenciado");
+            } catch (err) {
+                console.error("Error alternando chat:", err);
+            }
+        };
+
+        window.clearAllDeviceBindings = async function() {
+            try {
+                for (const u of users) {
+                    await updateDoc(doc(USERS_COLLECTION_REF, u.id), {
+                        deviceFingerprint: 'RESET_' + Date.now()
+                    });
+                }
+                localStorage.removeItem('evc_device_fingerprint');
+                showModal("Mantenimiento", "Se desvincularon las huellas de dispositivos en Firebase.");
+            } catch (err) {
+                console.error("Error al resetear dispositivos:", err);
+            }
+        };
+
+        window.resetAllVotes = async function() {
+            try {
+                for (const u of users) {
+                    await updateDoc(doc(USERS_COLLECTION_REF, u.id), {
+                        vote: null,
+                        comment: ''
+                    });
+                }
+                showModal("Reinicio Completo", "Se reestablecieron todos los votos en Firebase.");
+            } catch (err) {
+                console.error("Error al reiniciar votos:", err);
+            }
+        };
+
+        window.renderAdminVoterList = function() {
             const tbody = document.getElementById('adminVoterTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
             const sectionFilter = document.getElementById('adminSectionFilter').value;
@@ -1013,11 +1089,10 @@
                 filtered = users.filter(u => u.seccion === sectionFilter);
             }
 
-            // Ordenar alfabéticamente por Nombre
             filtered.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No hay estudiantes registrados en esta sección.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No hay estudiantes registrados.</td></tr>`;
                 return;
             }
 
@@ -1032,7 +1107,7 @@
                     voteBadge = '<span class="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full text-[11px]">Chemise</span>';
                 }
 
-                const fpShort = u.deviceFingerprint ? u.deviceFingerprint.substring(0, 12) + '...' : 'N/A';
+                const fpShort = u.deviceFingerprint ? u.deviceFingerprint.substring(0, 10) + '...' : 'N/A';
 
                 tr.innerHTML = `
                     <td class="py-3 px-4 font-bold text-slate-800">${sanitizeHTML(u.nombre)} ${sanitizeHTML(u.apellido)}</td>
@@ -1049,40 +1124,35 @@
 
                 tbody.appendChild(tr);
             });
-        }
+        };
 
-        function deleteUserByAdmin(userId) {
-            const targetUser = users.find(u => u.id === userId);
-            if (!targetUser) return;
-
-            // Eliminar usuario
-            users = users.filter(u => u.id !== userId);
-            setStoredData('evc_users', users);
-
-            // Si el usuario borrado es el actual logueado
-            if (currentUser && currentUser.id === userId) {
-                currentUser = null;
-                localStorage.removeItem('evc_current_user');
+        window.deleteUserByAdmin = async function(userId) {
+            try {
+                await deleteDoc(doc(USERS_COLLECTION_REF, userId));
+                if (currentUser && currentUser.id === userId) {
+                    currentUser = null;
+                    localStorage.removeItem('evc_session_userid');
+                }
+                showModal("Usuario Eliminado", "Registro eliminado correctamente de Firebase.");
+            } catch (err) {
+                console.error("Error al eliminar usuario:", err);
             }
+        };
 
-            showModal("Moderación", `El registro de "${targetUser.nombre} ${targetUser.apellido}" ha sido eliminado con éxito.`);
-            renderAdminDashboard();
-        }
-
-        // --- SISTEMA DE MODAL PERSONALIZADO ---
-        function showModal(title, message) {
+        // 8. MODAL SISTEMA
+        window.showModal = function(title, message) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalMessage').textContent = message;
             document.getElementById('customModal').classList.remove('hidden');
-        }
+        };
 
-        function closeModal() {
+        window.closeModal = function() {
             document.getElementById('customModal').classList.add('hidden');
-        }
+        };
 
-        // INIT ON LOAD
+        // Arrabque de Firebase e interfaz
         window.onload = function() {
-            updateUserBadge();
+            initAuth();
             showView('home');
         };
     </script>
