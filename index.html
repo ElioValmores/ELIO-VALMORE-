@@ -29,21 +29,10 @@
             font-family: 'Inter', sans-serif;
             background-color: #f0f7ff;
         }
-        /* Custom scrollbars */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body class="bg-brandBg text-slate-800 min-h-screen flex flex-col">
@@ -56,7 +45,7 @@
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Liceo Elio Valmore Castellano</h1>
+                    <h1 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Liceo Elio Valmores Castellano</h1>
                     <div class="flex items-center space-x-2">
                         <span class="text-xs text-sky-600 font-semibold tracking-wide">PROMO XXXV</span>
                         <span class="text-[10px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-full border border-sky-200"><i class="fa-solid fa-code text-[9px] mr-1"></i> Hearry Silva</span>
@@ -249,7 +238,7 @@
                         </div>
 
                         <div class="bg-sky-50/60 p-4 rounded-2xl border border-sky-100 text-xs md:text-sm text-slate-700 leading-relaxed">
-                            La chaqueta promocional brinda un aspecto mucho más elegante y distintivo para destacar con presencia en cada actividad institucional del liceo. Ofrece una durabilidad superior durante todo el año escolar, protegiendo contra el clima cambiante con abrigo y comodidad. Su diseño acolchado permite bordar con mayor detalle los logos conmemorativos, nombres e insignias especiales de la Promo XXXV. Además, se conserva impecable con el paso de los años como un recuerdo físico duradero e icónico para toda la vida.
+                            La chaqueta promocional brinda un aspecto mucho más elegante y distintivo para destacar con presencia en cada actividad institucional del liceo. Ofrece una durabilidad superior durante todo el año escolar, protegiendo contra el clima cambiante con abrigo y comodidad.
                         </div>
                     </div>
 
@@ -276,7 +265,7 @@
                         </div>
 
                         <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100 text-xs md:text-sm text-slate-700 leading-relaxed">
-                            La chemise es una prenda fresca, ligera y sumamente cómoda, perfecta para adaptarse al clima cálido cotidiano en las aulas del liceo. Facilita una movilidad total y libertad en el día a día sin causar sofoco térmico durante las jornadas de clases e intercursos. Su costo de confección suele ser más accesible para el presupuesto de todas las familias, facilitando la adquisición uniforme.
+                            La chemise es una prenda fresca, ligera y sumamente cómoda, perfecta para adaptarse al clima cálido cotidiano en las aulas del liceo. Facilita una movilidad total y libertad en el día a día sin causar sofoco térmico.
                         </div>
                     </div>
 
@@ -288,7 +277,7 @@
 
             </div>
 
-            <!-- Módulo Opcional de Comentario tras votar -->
+            <!-- Comentario opcional -->
             <div id="commentBoxSection" class="hidden bg-white p-6 rounded-3xl border border-sky-100 shadow-sm space-y-3">
                 <h4 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
                     <i class="fa-solid fa-comment-dots text-sky-600"></i>
@@ -301,7 +290,7 @@
                 <p id="currentCommentDisplay" class="text-xs text-slate-500 italic mt-1"></p>
             </div>
 
-            <!-- NUBE DE CHAT / DEBATE EN VIVO -->
+            <!-- CHAT DE DEBATE EN VIVO -->
             <div class="bg-white rounded-3xl p-6 shadow-md border border-sky-100 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div class="flex items-center space-x-2">
@@ -311,12 +300,10 @@
                     <span id="chatStatusBadge" class="text-xs px-2.5 py-1 rounded-full font-semibold bg-emerald-100 text-emerald-700">Chat Activo</span>
                 </div>
 
-                <!-- Mensajes del Chat -->
                 <div id="chatMessages" class="h-64 overflow-y-auto space-y-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
                     <div class="text-center text-xs text-slate-400 py-4">Cargando mensajes en tiempo real...</div>
                 </div>
 
-                <!-- Input de Enviar Mensaje -->
                 <form id="chatForm" onsubmit="sendChatMessage(event)" class="flex gap-2">
                     <input type="text" id="chatInput" placeholder="Escribe un mensaje para debatir..." class="flex-grow px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
                     <button type="submit" id="btnSendChat" class="px-5 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition flex items-center space-x-1">
@@ -362,9 +349,7 @@
                 </button>
             </div>
 
-            <!-- Tarjetas de Control Global -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Pausar/Reanudar Votación -->
                 <div class="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-between space-y-3">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold">
@@ -380,7 +365,6 @@
                     </button>
                 </div>
 
-                <!-- Silenciar/Activar Chat -->
                 <div class="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-between space-y-3">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold">
@@ -396,7 +380,6 @@
                     </button>
                 </div>
 
-                <!-- Estadísticas Conteo Exacto -->
                 <div class="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm flex flex-col justify-center space-y-2 text-center">
                     <span class="text-xs font-bold text-slate-500 uppercase">Participación Total</span>
                     <div class="text-3xl font-black text-sky-600" id="adminTotalVotersCount">0</div>
@@ -404,13 +387,11 @@
                 </div>
             </div>
 
-            <!-- Herramientas de Mantenimiento de Sistema Antifraude -->
             <div class="bg-white rounded-3xl p-6 border border-sky-100 shadow-sm space-y-3">
                 <h3 class="font-bold text-slate-800 text-sm flex items-center space-x-2">
                     <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
                     <span>Control Antifraude y Mantenimiento</span>
                 </h3>
-                <p class="text-xs text-slate-500">Acciones globales para restaurar permisos de equipos o reiniciar votaciones registradas.</p>
                 <div class="flex flex-wrap gap-3 pt-2">
                     <button onclick="clearAllDeviceBindings()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl transition flex items-center space-x-2">
                         <i class="fa-solid fa-unlock"></i>
@@ -423,7 +404,6 @@
                 </div>
             </div>
 
-            <!-- Tabla de Registro y Votos Filtrable -->
             <div class="bg-white rounded-3xl p-6 border border-sky-100 shadow-sm space-y-4">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <h3 class="font-bold text-slate-800 text-lg flex items-center space-x-2">
@@ -431,7 +411,6 @@
                         <span>Lista Realtime de Estudiantes y Votos</span>
                     </h3>
 
-                    <!-- Filtro por Sección -->
                     <div class="flex items-center space-x-2">
                         <label class="text-xs font-bold text-slate-600">Sección:</label>
                         <select id="adminSectionFilter" onchange="renderAdminVoterList()" class="px-3 py-1.5 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-sky-500 outline-none">
@@ -446,7 +425,6 @@
                     </div>
                 </div>
 
-                <!-- Tabla Responsive -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-slate-700 border-collapse">
                         <thead>
@@ -460,7 +438,6 @@
                             </tr>
                         </thead>
                         <tbody id="adminVoterTableBody" class="divide-y divide-slate-100">
-                            <!-- Se renderiza dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -478,57 +455,46 @@
         </p>
     </footer>
 
-    <!-- LÓGICA CONEXIÓN FIREBASE FIRESTORE REALTIME -->
+    <!-- CONEXIÓN REALTIME A TU PROYECTO FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Globales del entorno Firebase
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'evc-votaciones-promo35';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "demo-key",
-            authDomain: "demo.firebaseapp.com",
-            projectId: "demo-project",
-            storageBucket: "demo.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:123456"
+        // TUS CREDENCIALES REALES DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2sxhSg6Svy47-qY0AqHYzBLPKi-4R02I",
+            authDomain: "votaciones-elio-valmore.firebaseapp.com",
+            projectId: "votaciones-elio-valmore",
+            storageBucket: "votaciones-elio-valmore.firebasestorage.app",
+            messagingSenderId: "978534158863",
+            appId: "1:978534158863:web:a21c07882f20b85171c97a"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Rutas Estrictas de Firestore según especificaciones
-        const USERS_COLLECTION_REF = collection(db, 'artifacts', appId, 'public', 'data', 'users');
-        const CHAT_COLLECTION_REF = collection(db, 'artifacts', appId, 'public', 'data', 'chat');
-        const SETTINGS_DOC_REF = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'config');
+        // Colecciones de Firestore
+        const USERS_COLLECTION = collection(db, 'users');
+        const CHAT_COLLECTION = collection(db, 'chat');
+        const SETTINGS_DOC = doc(db, 'settings', 'config');
 
-        // Constante PIN Admin
         const ADMIN_PIN = "38759";
 
-        // Estado en memoria sincronizado en tiempo real con Firebase
         let firebaseAuthUser = null;
         let users = [];
         let chatMessages = [];
         let appSettings = { votingActive: true, chatActive: true };
         let currentUser = null;
 
-        // Limpiar strings contra XSS
         function sanitizeHTML(str) {
             if (!str) return '';
             return str.replace(/[&<>"']/g, function (m) {
-                return {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#039;'
-                }[m];
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
             });
         }
 
-        // Huella digital de dispositivo
         function getDeviceFingerprint() {
             let fp = localStorage.getItem('evc_device_fingerprint');
             if (!fp) {
@@ -540,18 +506,11 @@
 
         const currentDeviceFP = getDeviceFingerprint();
 
-        // 1. INICIALIZACIÓN DE AUTENTICACIÓN FIREBASE
         async function initAuth() {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
             } catch (err) {
                 console.error("Error autenticando Firebase:", err);
-                // Intento fallback
-                await signInAnonymously(auth).catch(e => console.error("Fallback falló", e));
             }
         }
 
@@ -559,7 +518,7 @@
             if (u) {
                 firebaseAuthUser = u;
                 document.getElementById('syncBadge').className = "flex items-center space-x-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full text-[11px] font-semibold";
-                document.getElementById('syncStatusText').textContent = "En vivo (Firebase)";
+                document.getElementById('syncStatusText').textContent = "Conectado";
                 initRealtimeListeners();
             } else {
                 document.getElementById('syncBadge').className = "flex items-center space-x-1.5 bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-full text-[11px] font-semibold";
@@ -567,33 +526,24 @@
             }
         });
 
-        // 2. LISTENERS REALTIME CON ONSNAPSHOT
         function initRealtimeListeners() {
             if (!firebaseAuthUser) return;
 
-            // Escuchar Ajustes Globales
-            onSnapshot(SETTINGS_DOC_REF, (docSnap) => {
+            onSnapshot(SETTINGS_DOC, (docSnap) => {
                 if (docSnap.exists()) {
                     appSettings = docSnap.data();
                 } else {
-                    // Inicializar si no existe
-                    setDoc(SETTINGS_DOC_REF, appSettings);
+                    setDoc(SETTINGS_DOC, appSettings);
                 }
                 updateVotingUI();
                 renderChatMessages();
-                if (!document.getElementById('viewAdmin').classList.contains('hidden')) {
-                    renderAdminDashboard();
-                }
-            }, (err) => console.error("Error escuchando settings:", err));
+                if (!document.getElementById('viewAdmin').classList.contains('hidden')) renderAdminDashboard();
+            });
 
-            // Escuchar Estudiantes / Votos
-            onSnapshot(USERS_COLLECTION_REF, (querySnap) => {
+            onSnapshot(USERS_COLLECTION, (querySnap) => {
                 users = [];
-                querySnap.forEach((d) => {
-                    users.push({ id: d.id, ...d.data() });
-                });
+                querySnap.forEach((d) => users.push({ id: d.id, ...d.data() }));
 
-                // Recuperar sesión persistida activa
                 const savedUserId = localStorage.getItem('evc_session_userid');
                 if (savedUserId) {
                     const match = users.find(u => u.id === savedUserId);
@@ -603,27 +553,17 @@
                 updateUserBadge();
                 checkDeviceBindingOnHome();
                 updateVotingUI();
+                if (!document.getElementById('viewAdmin').classList.contains('hidden')) renderAdminDashboard();
+            });
 
-                if (!document.getElementById('viewAdmin').classList.contains('hidden')) {
-                    renderAdminDashboard();
-                }
-            }, (err) => console.error("Error escuchando usuarios:", err));
-
-            // Escuchar Chat en Vivo
-            onSnapshot(CHAT_COLLECTION_REF, (querySnap) => {
+            onSnapshot(CHAT_COLLECTION, (querySnap) => {
                 chatMessages = [];
-                querySnap.forEach((d) => {
-                    chatMessages.push({ id: d.id, ...d.data() });
-                });
-
-                // Ordenar por tiempo en memoria (Rule 2)
+                querySnap.forEach((d) => chatMessages.push({ id: d.id, ...d.data() }));
                 chatMessages.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-
                 renderChatMessages();
-            }, (err) => console.error("Error escuchando chat:", err));
+            });
         }
 
-        // 3. VISTAS Y NAVEGACIÓN
         window.showView = function(viewName) {
             document.getElementById('viewHome').classList.add('hidden');
             document.getElementById('viewRegister').classList.add('hidden');
@@ -643,7 +583,6 @@
                 document.getElementById('viewAdmin').classList.remove('hidden');
                 renderAdminDashboard();
             }
-
             updateUserBadge();
         };
 
@@ -696,7 +635,7 @@
                 currentUser = boundUser;
                 localStorage.setItem('evc_session_userid', boundUser.id);
                 updateUserBadge();
-                showModal("Acceso Restablecido", `Bienvenido ${boundUser.nombre}. Se ha recuperado la sesión de tu equipo.`);
+                showModal("Acceso Restablecido", `Bienvenido ${boundUser.nombre}. Se recuperó la sesión de tu equipo.`);
                 showView('voting');
                 return;
             }
@@ -704,7 +643,6 @@
             showView('register');
         };
 
-        // 4. REGISTRO EN FIRESTORE
         window.submitRegistration = async function(e) {
             e.preventDefault();
 
@@ -715,7 +653,7 @@
 
             const existingDeviceUser = users.find(u => u.deviceFingerprint === currentDeviceFP);
             if (existingDeviceUser) {
-                showModal("Dispositivo Ya Registrado", `Este equipo ya registró al estudiante "${existingDeviceUser.nombre} ${existingDeviceUser.apellido}". No es posible duplicar registros desde el mismo equipo.`);
+                showModal("Dispositivo Ya Registrado", `Este equipo ya registró a "${existingDeviceUser.nombre} ${existingDeviceUser.apellido}".`);
                 currentUser = existingDeviceUser;
                 localStorage.setItem('evc_session_userid', currentUser.id);
                 showView('voting');
@@ -727,7 +665,7 @@
             const seccion = document.getElementById('regSeccion').value;
 
             if (!rawNombre || !rawApellido || !seccion) {
-                showModal("Campos Incompletos", "Por favor ingresa Nombre, Apellido y Sección.");
+                showModal("Campos Incompletos", "Ingresa Nombre, Apellido y Sección.");
                 return;
             }
 
@@ -737,7 +675,7 @@
 
             const duplicateName = users.find(u => u.fullNameKey === fullNameKey);
             if (duplicateName) {
-                showModal("Estudiante Ya Registrado", `El estudiante "${nombre} ${apellido}" ya existe registrado. Si eres tú, conéctate desde el dispositivo donde realizaste el registro.`);
+                showModal("Estudiante Ya Registrado", `El estudiante "${nombre} ${apellido}" ya se encuentra en el sistema.`);
                 return;
             }
 
@@ -754,46 +692,37 @@
             };
 
             try {
-                // Guardar en Firestore
-                await setDoc(doc(USERS_COLLECTION_REF, userId), newUser);
-
+                await setDoc(doc(USERS_COLLECTION, userId), newUser);
                 currentUser = { id: userId, ...newUser };
                 localStorage.setItem('evc_session_userid', userId);
                 updateUserBadge();
-
-                showModal("¡Registro Exitoso!", `Bienvenido ${nombre} ${apellido} (${seccion}). Tu dispositivo ha quedado registrado en Firebase.`);
+                showModal("¡Registro Exitoso!", `Bienvenido ${nombre} ${apellido} (${seccion}).`);
                 showView('voting');
             } catch (err) {
-                console.error("Error guardando estudiante en Firebase:", err);
-                showModal("Error", "No se pudo registrar en la base de datos. Inténtalo de nuevo.");
+                console.error("Error al registrar:", err);
+                showModal("Error", "No se pudo registrar. Inténtalo de nuevo.");
             }
         };
 
-        // 5. EMISIÓN DE VOTOS EN TIEMPO REAL
         window.vote = async function(option) {
             if (!appSettings.votingActive) {
-                showModal("Votaciones Pausadas", "Las votaciones han sido suspendidas temporalmente.");
+                showModal("Votaciones Pausadas", "Las votaciones se encuentran cerradas temporalmente.");
                 return;
             }
 
             if (!currentUser) {
-                showModal("Identificación Requerida", "Debes registrarte antes de emitir tu voto.");
+                showModal("Identificación Requerida", "Debes registrarte antes de votar.");
                 showView('register');
                 return;
             }
 
             try {
-                const userDocRef = doc(USERS_COLLECTION_REF, currentUser.id);
-                await updateDoc(userDocRef, {
-                    vote: option
-                });
-
+                await updateDoc(doc(USERS_COLLECTION, currentUser.id), { vote: option });
                 currentUser.vote = option;
-                showModal("¡Voto Guardado!", `Has seleccionado: ${option}. Se ha actualizado en tiempo real en la base de datos.`);
+                showModal("¡Voto Guardado!", `Has seleccionado: ${option}.`);
                 updateVotingUI();
             } catch (err) {
-                console.error("Error registrando voto en Firebase:", err);
-                showModal("Error", "No se pudo registrar el voto. Revisa tu conexión.");
+                console.error("Error al votar:", err);
             }
         };
 
@@ -804,16 +733,12 @@
             const sanitizedComment = sanitizeHTML(rawComment);
 
             try {
-                const userDocRef = doc(USERS_COLLECTION_REF, currentUser.id);
-                await updateDoc(userDocRef, {
-                    comment: sanitizedComment
-                });
-
+                await updateDoc(doc(USERS_COLLECTION, currentUser.id), { comment: sanitizedComment });
                 currentUser.comment = sanitizedComment;
                 document.getElementById('currentCommentDisplay').textContent = `Tu comentario: "${sanitizedComment}"`;
-                showModal("Comentario Guardado", "Se envió tu aporte al servidor de la votación.");
+                showModal("Comentario Guardado", "Gracias por participar en el debate.");
             } catch (err) {
-                console.error("Error guardando comentario:", err);
+                console.error("Error al comentar:", err);
             }
         };
 
@@ -837,7 +762,6 @@
             document.getElementById('statPercentChaqueta').textContent = `${percChaqueta}% del total`;
             document.getElementById('statPercentChemis').textContent = `${percChemis}% del total`;
 
-            // Resaltar elección
             const cardChaqueta = document.getElementById('cardChaqueta');
             const cardChemis = document.getElementById('cardChemis');
             const badgeChaqueta = document.getElementById('badgeYourVoteChaqueta');
@@ -860,7 +784,6 @@
                 badgeChemis.classList.add('hidden');
             }
 
-            // Banner Pausado
             const pausedBanner = document.getElementById('pausedBanner');
             if (!appSettings.votingActive) {
                 pausedBanner.classList.remove('hidden');
@@ -878,13 +801,12 @@
             }
         }
 
-        // 6. CHAT DE DEBATE EN TIEMPO REAL
         function renderChatMessages() {
             const chatContainer = document.getElementById('chatMessages');
             chatContainer.innerHTML = '';
 
             if (chatMessages.length === 0) {
-                chatContainer.innerHTML = '<div class="text-center text-xs text-slate-400 py-6">Inicia el debate compartiendo tu opinión respetuosamente.</div>';
+                chatContainer.innerHTML = '<div class="text-center text-xs text-slate-400 py-6">Escribe el primer mensaje para iniciar el debate.</div>';
             }
 
             chatMessages.forEach(msg => {
@@ -902,7 +824,6 @@
                         <p class="text-xs text-slate-700 break-words">${sanitizeHTML(msg.text)}</p>
                     `;
                 }
-
                 chatContainer.appendChild(msgDiv);
             });
 
@@ -916,7 +837,7 @@
                 chatStatusBadge.textContent = 'Chat Silenciado';
                 chatStatusBadge.className = 'text-xs px-2.5 py-1 rounded-full font-semibold bg-rose-100 text-rose-700';
                 chatInput.disabled = true;
-                chatInput.placeholder = 'El chat fue silenciado por los administradores...';
+                chatInput.placeholder = 'El chat fue silenciado por la administración...';
                 btnSendChat.disabled = true;
                 btnSendChat.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
@@ -933,12 +854,12 @@
             e.preventDefault();
 
             if (!appSettings.chatActive) {
-                showModal("Chat Desactivado", "El chat está deshabilitado.");
+                showModal("Chat Desactivado", "El chat está silenciado.");
                 return;
             }
 
             if (!currentUser) {
-                showModal("Inicia Sesión", "Debes registrarte para enviar mensajes.");
+                showModal("Inicia Sesión", "Debes registrarte antes de enviar mensajes.");
                 return;
             }
 
@@ -962,13 +883,12 @@
             input.value = '';
 
             try {
-                await setDoc(doc(CHAT_COLLECTION_REF, msgId), newMsg);
+                await setDoc(doc(CHAT_COLLECTION, msgId), newMsg);
             } catch (err) {
                 console.error("Error al enviar mensaje:", err);
             }
         };
 
-        // 7. ADMINISTRACIÓN CONTROL REALTIME
         window.openAdminAuthModal = function() {
             document.getElementById('adminPasswordInput').value = '';
             document.getElementById('adminAuthModal').classList.remove('hidden');
@@ -1032,7 +952,7 @@
         window.toggleVotingStatus = async function() {
             const newStatus = !appSettings.votingActive;
             try {
-                await updateDoc(SETTINGS_DOC_REF, { votingActive: newStatus });
+                await updateDoc(SETTINGS_DOC, { votingActive: newStatus });
                 showModal("Ajuste Actualizado", newStatus ? "Votaciones Reabiertas" : "Votaciones Pausadas");
             } catch (err) {
                 console.error("Error alternando votaciones:", err);
@@ -1042,7 +962,7 @@
         window.toggleChatStatus = async function() {
             const newChat = !appSettings.chatActive;
             try {
-                await updateDoc(SETTINGS_DOC_REF, { chatActive: newChat });
+                await updateDoc(SETTINGS_DOC, { chatActive: newChat });
                 showModal("Chat Actualizado", newChat ? "Chat de Debate Activado" : "Chat de Debate Silenciado");
             } catch (err) {
                 console.error("Error alternando chat:", err);
@@ -1052,12 +972,10 @@
         window.clearAllDeviceBindings = async function() {
             try {
                 for (const u of users) {
-                    await updateDoc(doc(USERS_COLLECTION_REF, u.id), {
-                        deviceFingerprint: 'RESET_' + Date.now()
-                    });
+                    await updateDoc(doc(USERS_COLLECTION, u.id), { deviceFingerprint: 'RESET_' + Date.now() });
                 }
                 localStorage.removeItem('evc_device_fingerprint');
-                showModal("Mantenimiento", "Se desvincularon las huellas de dispositivos en Firebase.");
+                showModal("Mantenimiento", "Se desvincularon las huellas de dispositivos.");
             } catch (err) {
                 console.error("Error al resetear dispositivos:", err);
             }
@@ -1066,12 +984,9 @@
         window.resetAllVotes = async function() {
             try {
                 for (const u of users) {
-                    await updateDoc(doc(USERS_COLLECTION_REF, u.id), {
-                        vote: null,
-                        comment: ''
-                    });
+                    await updateDoc(doc(USERS_COLLECTION, u.id), { vote: null, comment: '' });
                 }
-                showModal("Reinicio Completo", "Se reestablecieron todos los votos en Firebase.");
+                showModal("Reinicio Completo", "Se reestablecieron todos los votos.");
             } catch (err) {
                 console.error("Error al reiniciar votos:", err);
             }
@@ -1128,7 +1043,7 @@
 
         window.deleteUserByAdmin = async function(userId) {
             try {
-                await deleteDoc(doc(USERS_COLLECTION_REF, userId));
+                await deleteDoc(doc(USERS_COLLECTION, userId));
                 if (currentUser && currentUser.id === userId) {
                     currentUser = null;
                     localStorage.removeItem('evc_session_userid');
@@ -1139,7 +1054,6 @@
             }
         };
 
-        // 8. MODAL SISTEMA
         window.showModal = function(title, message) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalMessage').textContent = message;
@@ -1150,7 +1064,6 @@
             document.getElementById('customModal').classList.add('hidden');
         };
 
-        // Arrabque de Firebase e interfaz
         window.onload = function() {
             initAuth();
             showView('home');
