@@ -81,7 +81,7 @@
             justify-content: center;
             padding: 1rem;
             z-index: 9999;
-            background-color: rgba(15, 23, 42, 0.75);
+            background-color: rgba(15, 23, 42, 0.78);
             backdrop-filter: blur(8px);
             overflow-y: auto;
         }
@@ -94,7 +94,7 @@
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer group" onclick="showView('home')">
                 <div class="w-11 h-11 md:w-12 md:h-12 bg-slate-950 rounded-2xl flex items-center justify-center shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform overflow-hidden border border-sky-300/30">
-                    <img src="logo.png" alt="Logo Liceo Elio Valmore Castellano" class="w-full h-full object-cover">
+                    <img src="logo.png" onerror="this.onerror=null; this.src='https://placehold.co/100x100/0f172a/38bdf8?text=EVC';" alt="Logo Liceo Elio Valmore Castellano" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="font-extrabold text-white text-sm md:text-base leading-tight tracking-tight">Liceo Elio Valmore Castellano</h1>
@@ -119,18 +119,19 @@
             <i class="fa-solid fa-sparkles"></i>
         </div>
         <span class="text-xl md:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-white to-sky-400">
-            Hola Nikol ✨
+            Hola Nikol 
+        
         </span>
     </div>
 
-    <!-- NOTIFICACIÓN DE LÍMITE DE 226 VOTANTES SUPERADO -->
+    <!-- NOTIFICACIÓN DE LÍMITE DE 226 ESTUDIANTES SUPERADO -->
     <div id="limitNotification" class="hidden notification-nikol rounded-3xl p-6 md:p-8 text-white max-w-md w-full text-center shadow-2xl animate-pop-in border-2 border-amber-400">
         <div class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-400 text-2xl mx-auto mb-3">
             <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
-        <h3 class="text-xl font-black text-amber-300 mb-2">¡Límite de Votantes Alcanzado!</h3>
+        <h3 class="text-xl font-black text-amber-300 mb-2">¡Límite de Estudiantes Alcanzado!</h3>
         <p class="text-xs md:text-sm text-slate-300 mb-6 leading-relaxed">
-            El total de votaciones ha llegado a <strong class="text-white">226</strong>, alcanzando el cupo máximo esperado de la promoción. Queda a criterio del administrador evaluar si desea reiniciar las votaciones.
+            El total de votos de <strong class="text-white">Estudiantes</strong> ha llegado a <strong class="text-white">226</strong>, alcanzando el cupo máximo esperado de la promoción. Queda a criterio del administrador evaluar si desea reiniciar las votaciones.
         </p>
         <button onclick="closeLimitNotification()" class="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-2xl shadow-lg transition-all">Entendido</button>
     </div>
@@ -147,6 +148,64 @@
         </div>
     </div>
 
+    <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO (REEMPLAZA CONFIRM NATIVO) -->
+    <div id="confirmModal" class="hidden modal-centered-overlay">
+        <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl text-center animate-pop-in space-y-5">
+            <div class="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl bg-rose-950 text-rose-400 border border-rose-800">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="space-y-1.5">
+                <h3 id="confirmModalTitle" class="font-extrabold text-xl text-white">Confirmar Acción</h3>
+                <p id="confirmModalMessage" class="text-xs md:text-sm text-slate-300 leading-relaxed">¿Estás seguro de realizar esta acción?</p>
+            </div>
+            <div class="flex gap-3 pt-1">
+                <button id="confirmCancelBtn" class="w-1/2 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">Cancelar</button>
+                <button id="confirmOkBtn" class="w-1/2 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-rose-600/30 transition">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE SELECCIÓN DE ROL AL TOCAR "VOTAR AHORA" -->
+    <div id="roleSelectModal" class="hidden modal-centered-overlay">
+        <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl space-y-6 animate-pop-in relative my-auto text-center">
+            <div class="space-y-2">
+                <div class="w-14 h-14 bg-sky-950 text-sky-400 border border-sky-800 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                </div>
+                <h3 class="text-2xl font-black text-white tracking-tight">¿Cómo deseas votar?</h3>
+                <p class="text-xs md:text-sm text-slate-400">Selecciona tu perfil institucional para continuar con el proceso de elección.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Botón Votar como Estudiante -->
+                <button onclick="selectVoterRole('estudiante')" class="group bg-slate-950 hover:bg-sky-950/70 border-2 border-slate-800 hover:border-sky-500 rounded-2xl p-5 transition-all flex flex-col items-center justify-center space-y-3 shadow-lg hover:-translate-y-0.5 active:translate-y-0">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-500/20 text-sky-400 group-hover:bg-sky-500 group-hover:text-white flex items-center justify-center text-2xl transition-colors">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="block font-black text-white text-base">Votar como Estudiante</span>
+                        <span class="block text-[11px] text-slate-400 mt-0.5">Alumnos Promo XXXV (A-G)</span>
+                    </div>
+                </button>
+
+                <!-- Botón Votar como Docente -->
+                <button onclick="selectVoterRole('docente')" class="group bg-slate-950 hover:bg-amber-950/50 border-2 border-slate-800 hover:border-amber-500 rounded-2xl p-5 transition-all flex flex-col items-center justify-center space-y-3 shadow-lg hover:-translate-y-0.5 active:translate-y-0">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 flex items-center justify-center text-2xl transition-colors">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <span class="block font-black text-white text-base">Votar como Docente</span>
+                        <span class="block text-[11px] text-slate-400 mt-0.5">Personal Docente E.V.C.</span>
+                    </div>
+                </button>
+            </div>
+
+            <button onclick="closeRoleSelectModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
     <!-- CONTENEDOR PRINCIPAL -->
     <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 md:py-10 flex flex-col justify-center">
 
@@ -154,7 +213,7 @@
         <section id="viewHome" class="flex flex-col items-center justify-center text-center space-y-8 my-auto">
             <div class="relative group">
                 <div class="w-36 h-36 md:w-44 md:h-44 bg-slate-950 rounded-3xl flex items-center justify-center shadow-2xl shadow-sky-500/20 border-4 border-slate-800 transform group-hover:scale-105 transition-all duration-300 overflow-hidden">
-                    <img src="logo.png" alt="Logo Elio Valmore Castellano" class="w-full h-full object-cover">
+                    <img src="logo.png" onerror="this.onerror=null; this.src='https://placehold.co/200x200/0f172a/38bdf8?text=E.V.C.';" alt="Logo Elio Valmore Castellano" class="w-full h-full object-cover">
                 </div>
                 <span class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-slate-950 text-sky-400 text-xs font-extrabold px-4 py-1.5 rounded-full shadow-lg border border-sky-800 tracking-wider">
                     E.V.C.
@@ -174,14 +233,15 @@
             </div>
 
             <div class="w-full max-w-xs space-y-3 pt-2">
-                <button onclick="showView('voting')" class="w-full py-4 px-6 bg-sky-600 hover:bg-sky-500 text-white font-black rounded-2xl shadow-xl shadow-sky-600/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-3 text-lg">
+                <button onclick="openRoleSelectModal()" class="w-full py-4 px-6 bg-sky-600 hover:bg-sky-500 text-white font-black rounded-2xl shadow-xl shadow-sky-600/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-3 text-lg">
                     <i class="fa-solid fa-check-to-slot"></i>
                     <span>VOTAR AHORA</span>
                 </button>
 
-                <button onclick="openAdminAuthModal()" class="w-full py-3 px-6 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold border border-slate-700 rounded-2xl shadow-sm transition-all flex items-center justify-center space-x-2 text-sm">
+                <button onclick="handleAdminAccess()" class="w-full py-3 px-6 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold border border-slate-700 rounded-2xl shadow-sm transition-all flex items-center justify-center space-x-2 text-sm">
                     <i class="fa-solid fa-user-gear text-slate-400"></i>
                     <span>Administrador</span>
+                    <span id="homeAdminLockIcon" class="hidden text-amber-400 ml-1" title="Protegido con contraseña"><i class="fa-solid fa-lock text-xs"></i></span>
                 </button>
             </div>
         </section>
@@ -189,9 +249,18 @@
         <!-- 2. PANTALLA DE VOTACIÓN -->
         <section id="viewVoting" class="hidden my-auto space-y-6 py-4">
             <div class="text-center space-y-2 max-w-xl mx-auto">
-                <span class="bg-sky-950 text-sky-400 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-sky-800">
-                    Decisión de la Promo XXXV
-                </span>
+                <!-- Indicador de Modo Activo + Botón Cambiar Rol -->
+                <div class="flex flex-wrap items-center justify-center gap-2 mb-1">
+                    <span id="activeRoleBadge" class="bg-sky-950 text-sky-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-sky-700 flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Modo: Estudiante</span>
+                    </span>
+                    <button onclick="openRoleSelectModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold px-3 py-1.5 rounded-full border border-slate-700 transition flex items-center space-x-1">
+                        <i class="fa-solid fa-repeat text-[11px]"></i>
+                        <span>Cambiar Rol</span>
+                    </button>
+                </div>
+
                 <h2 class="text-2xl md:text-4xl font-black text-white tracking-tight">
                     Elige la Prenda Representativa
                 </h2>
@@ -299,18 +368,18 @@
             </div>
         </section>
 
-        <!-- 3. MODAL DE REGISTRO DEL VOTANTE -->
+        <!-- 3. MODAL DE REGISTRO DEL VOTANTE (ESTUDIANTE O DOCENTE) -->
         <div id="registerModal" class="hidden modal-centered-overlay">
             <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl space-y-5 animate-pop-in relative my-auto">
                 <div class="text-center space-y-1">
-                    <div class="w-12 h-12 bg-sky-950 text-sky-400 border border-sky-800 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold">
+                    <div id="regModalIcon" class="w-12 h-12 bg-sky-950 text-sky-400 border border-sky-800 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold">
                         <i class="fa-solid fa-address-card"></i>
                     </div>
-                    <h3 class="text-xl font-black text-white">Registro de Votante</h3>
+                    <h3 id="regModalTitle" class="text-xl font-black text-white">Registro de Estudiante</h3>
                     <p class="text-xs text-slate-400">Confirma tus datos personales para guardar tu voto por <strong id="selectedPrendaText" class="text-sky-400"></strong>.</p>
                 </div>
 
-                <form id="voterRegistrationForm" onsubmit="submitVoteWithStudent(event)" class="space-y-4">
+                <form id="voterRegistrationForm" onsubmit="submitVoteWithVoter(event)" class="space-y-4">
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-extrabold text-slate-300 uppercase mb-1">Primer Nombre</label>
@@ -318,7 +387,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-extrabold text-slate-300 uppercase mb-1">Segundo Nombre</label>
-                            <input type="text" id="regSegundoNombre" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none text-sm transition">
+                            <input type="text" id="regSegundoNombre" placeholder="Opcional" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none text-sm transition">
                         </div>
                     </div>
 
@@ -327,7 +396,8 @@
                         <input type="text" id="regApellido" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none text-sm transition">
                     </div>
 
-                    <div>
+                    <!-- Contenedor de Sección: Se oculta automáticamente si el rol es 'docente' -->
+                    <div id="regSeccionContainer">
                         <label class="block text-xs font-extrabold text-slate-300 uppercase mb-1">Sección</label>
                         <select id="regSeccion" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none text-sm transition">
                             <option value="" disabled selected>Selecciona tu sección</option>
@@ -349,20 +419,20 @@
             </div>
         </div>
 
-        <!-- 4. MODAL AUTH ADMINISTRADOR -->
+        <!-- 4. MODAL AUTH ADMINISTRADOR (SOLO SE MUESTRA SI SE CONFIGURÓ CONTRASEÑA) -->
         <div id="adminAuthModal" class="hidden modal-centered-overlay">
             <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl space-y-5 animate-pop-in my-auto">
                 <div class="text-center space-y-1">
-                    <div class="w-12 h-12 bg-slate-800 text-slate-300 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold border border-slate-700">
+                    <div class="w-12 h-12 bg-amber-950 text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold border border-amber-800">
                         <i class="fa-solid fa-lock"></i>
                     </div>
-                    <h3 class="text-xl font-black text-white">Panel Administrativo</h3>
-                    <p class="text-xs text-slate-400">Ingresa la clave institucional de control.</p>
+                    <h3 class="text-xl font-black text-white">Acceso Protegido</h3>
+                    <p class="text-xs text-slate-400">Ingresa la contraseña configurada para entrar al panel administrativo.</p>
                 </div>
 
                 <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
                     <div>
-                        <input type="password" id="adminPasswordInput" placeholder="Contraseña" class="w-full px-4 py-3 text-center tracking-widest text-lg rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none">
+                        <input type="password" id="adminPasswordInput" required placeholder="Contraseña" class="w-full px-4 py-3 text-center tracking-widest text-lg rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none">
                     </div>
                     <div class="flex gap-2">
                         <button type="button" onclick="closeAdminAuthModal()" class="w-1/2 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">Cancelar</button>
@@ -372,43 +442,123 @@
             </div>
         </div>
 
+        <!-- 4B. MODAL CONFIGURAR CONTRASEÑA DENTRO DEL PANEL ADMINISTRATIVO -->
+        <div id="adminPasswordConfigModal" class="hidden modal-centered-overlay">
+            <div class="bg-slate-900 border border-slate-700 text-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl space-y-5 animate-pop-in my-auto">
+                <div class="text-center space-y-1">
+                    <div class="w-12 h-12 bg-sky-950 text-sky-400 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold border border-sky-800">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-white">Seguridad del Panel</h3>
+                    <p id="adminPassStatusDesc" class="text-xs text-slate-400">Actualmente el panel no tiene contraseña. Puedes establecer una clave para proteger el acceso.</p>
+                </div>
+
+                <form onsubmit="saveAdminCustomPassword(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-extrabold text-slate-300 uppercase mb-1">Nueva Contraseña</label>
+                        <input type="password" id="newAdminPasswordInput" required minlength="3" placeholder="Escribe una contraseña..." class="w-full px-4 py-3 text-center tracking-widest text-base rounded-xl bg-slate-950 border border-slate-700 text-white focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeAdminPasswordConfigModal()" class="w-1/2 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">Cancelar</button>
+                        <button type="submit" class="w-1/2 py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow transition">Guardar Clave</button>
+                    </div>
+                </form>
+
+                <!-- Botón para eliminar contraseña si ya existe una -->
+                <div id="removeAdminPassContainer" class="hidden pt-2 border-t border-slate-800">
+                    <button type="button" onclick="removeAdminCustomPassword()" class="w-full py-2.5 bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/40 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <span>Quitar Contraseña (Acceso Libre)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- 5. PANEL DE ADMINISTRACIÓN -->
         <section id="viewAdmin" class="hidden space-y-6 py-4">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
                 <div>
                     <h2 class="text-2xl font-black text-white">Panel de Control Administrativo</h2>
-                    <p class="text-xs text-slate-400">Lista ordenada de votantes organizada por sección (A-G).</p>
+                    <p class="text-xs text-slate-400">Conteo oficial de estudiantes (A-G), docentes y resultado global en tiempo real.</p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="openAdminPasswordConfigModal()" id="btnAdminSecurity" class="px-4 py-2 bg-amber-600/20 hover:bg-amber-600 text-amber-300 hover:text-white border border-amber-500/40 font-bold text-xs rounded-xl shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-key"></i>
+                        <span id="btnAdminSecurityText">Colocar Contraseña</span>
+                    </button>
                     <button onclick="showView('colorPalette')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center space-x-2">
                         <i class="fa-solid fa-palette"></i>
                         <span>Paleta de Colores</span>
                     </button>
                     <button onclick="showView('home')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition">
-                        Cerrar Sesión
+                        Salir al Inicio
                     </button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center">
-                    <span class="text-xs font-bold text-slate-400 uppercase">Total Votos Emitidos / 226</span>
-                    <div id="adminTotalVotos" class="text-3xl font-black text-sky-400 mt-1">0</div>
+            <!-- TARJETAS DE CONTADORES: ESTUDIANTES (/226), DOCENTES, CHAQUETA, CHEMIS -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-900 p-5 rounded-2xl border border-sky-900/60 text-center shadow-lg">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase block">Votos Estudiantes / 226</span>
+                    <div id="adminTotalEstudiantes" class="text-2xl md:text-3xl font-black text-sky-400 mt-1">0 / 226</div>
+                    <span class="text-[10px] text-slate-500">Cupo estudiantil</span>
                 </div>
-                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center">
-                    <span class="text-xs font-bold text-slate-400 uppercase">Votos Chaqueta</span>
-                    <div id="adminTotalChaqueta" class="text-3xl font-black text-sky-400 mt-1">0</div>
+                <div class="bg-slate-900 p-5 rounded-2xl border border-amber-900/60 text-center shadow-lg">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase block">Votos Docentes</span>
+                    <div id="adminTotalDocentes" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">0</div>
+                    <span class="text-[10px] text-slate-500">Personal docente</span>
                 </div>
-                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center">
-                    <span class="text-xs font-bold text-slate-400 uppercase">Votos Chemis</span>
-                    <div id="adminTotalChemis" class="text-3xl font-black text-emerald-400 mt-1">0</div>
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center shadow-lg">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase block">Total Chaqueta</span>
+                    <div id="adminTotalChaqueta" class="text-2xl md:text-3xl font-black text-sky-400 mt-1">0</div>
+                    <span class="text-[10px] text-slate-500">Estudiantes + Docentes</span>
+                </div>
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-center shadow-lg">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase block">Total Chemis</span>
+                    <div id="adminTotalChemis" class="text-2xl md:text-3xl font-black text-emerald-400 mt-1">0</div>
+                    <span class="text-[10px] text-slate-500">Estudiantes + Docentes</span>
+                </div>
+            </div>
+
+            <!-- BARRA GLOBAL DE TODOS LOS VOTOS (ESTUDIANTES + DOCENTES) Y QUIÉN VA GANANDO -->
+            <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 shadow-xl space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Resultado Global Combinado (Estudiantes + Docentes)</span>
+                        <h3 id="adminGlobalWinnerText" class="text-lg md:text-xl font-black text-white mt-0.5 flex items-center space-x-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i>
+                            <span>Esperando votos...</span>
+                        </h3>
+                    </div>
+                    <div class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-2xl text-right">
+                        <span class="text-[11px] font-bold text-slate-400 uppercase block">Total General de Votos</span>
+                        <span id="adminGrandTotalVotes" class="text-2xl font-black text-white">0</span>
+                    </div>
+                </div>
+
+                <!-- Etiquetas superiores de la barra -->
+                <div class="flex items-center justify-between text-xs md:text-sm font-extrabold">
+                    <div class="flex items-center space-x-2 text-sky-400">
+                        <i class="fa-solid fa-vest-patches"></i>
+                        <span id="adminBarChaquetaLabel">Chaqueta: 0 votos (0%)</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-emerald-400">
+                        <span id="adminBarChemisLabel">Chemis: 0 votos (0%)</span>
+                        <i class="fa-solid fa-shirt"></i>
+                    </div>
+                </div>
+
+                <!-- Barra de progreso visual dividida -->
+                <div class="w-full h-5 bg-slate-950 rounded-full overflow-hidden flex border border-slate-700 p-0.5 shadow-inner">
+                    <div id="adminBarChaquetaFill" class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-l-full transition-all duration-500 flex items-center justify-start pl-2 text-[10px] font-black text-white" style="width: 50%;"></div>
+                    <div id="adminBarChemisFill" class="bg-gradient-to-r from-emerald-500 to-emerald-400 h-full rounded-r-full transition-all duration-500 flex items-center justify-end pr-2 text-[10px] font-black text-slate-950" style="width: 50%;"></div>
                 </div>
             </div>
 
             <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h4 class="font-bold text-sm text-white">Reiniciar Sistema de Votos</h4>
-                    <p class="text-xs text-slate-400">Elimina los registros en Firebase para habilitar una nueva jornada.</p>
+                    <p class="text-xs text-slate-400">Elimina todos los registros (estudiantes y docentes) en Firebase para habilitar una nueva jornada.</p>
                 </div>
                 <button onclick="resetAllVotes()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-rose-600/30 transition flex items-center space-x-2">
                     <i class="fa-solid fa-rotate-left"></i>
@@ -421,9 +571,9 @@
                     <div>
                         <h3 class="font-bold text-white text-lg flex items-center space-x-2">
                             <i class="fa-solid fa-users text-sky-400"></i>
-                            <span>Registro de Estudiantes</span>
+                            <span>Registro de Votantes (Estudiantes y Docentes)</span>
                         </h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Activa el botón de borrado para habilitar la eliminación individual por fila.</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Filtra por sección o docentes, o activa el modo borrado individual.</p>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-3">
@@ -433,9 +583,10 @@
                         </button>
 
                         <div class="flex items-center space-x-2">
-                            <label class="text-xs font-bold text-slate-400">Sección:</label>
+                            <label class="text-xs font-bold text-slate-400">Filtro:</label>
                             <select id="adminSectionFilter" onchange="renderAdminVoterList()" class="px-3 py-1.5 border border-slate-700 rounded-xl text-xs bg-slate-950 text-white focus:ring-2 focus:ring-sky-500 outline-none font-semibold">
-                                <option value="ALL">Todas las Secciones (A-G)</option>
+                                <option value="ALL">Todos (Estudiantes y Docentes)</option>
+                                <option value="DOCENTE">Solo Docentes</option>
                                 <option value="A">Sección A</option>
                                 <option value="B">Sección B</option>
                                 <option value="C">Sección C</option>
@@ -452,8 +603,8 @@
                     <table class="w-full text-left text-xs text-slate-300 border-collapse">
                         <thead>
                             <tr class="bg-slate-950 text-slate-400 border-b border-slate-800">
-                                <th class="py-3 px-4 font-extrabold uppercase">Sección</th>
-                                <th class="py-3 px-4 font-extrabold uppercase">Estudiante</th>
+                                <th class="py-3 px-4 font-extrabold uppercase">Rol / Sección</th>
+                                <th class="py-3 px-4 font-extrabold uppercase">Nombre Completo</th>
                                 <th class="py-3 px-4 font-extrabold uppercase text-center">Elección</th>
                                 <th id="thAcciones" class="py-3 px-4 font-extrabold uppercase text-center hidden">Acción</th>
                             </tr>
@@ -514,14 +665,16 @@
 
         const USERS_COLLECTION = collection(db, 'votos_promo_xxxv');
         const PALETTES_COLLECTION = collection(db, 'paletas_secciones_xxxv');
-        const ADMIN_PIN = "38759";
+        const ADMIN_CONFIG_DOC = doc(db, 'config_admin_xxxv', 'seguridad');
 
         let firebaseAuthUser = null;
         let voterList = [];
         let palettesData = {};
+        let voterRole = 'estudiante'; // 'estudiante' o 'docente'
         let selectedOptionToVote = null;
         let isDeleteModeActive = false;
         let limitNotificationShown = false;
+        let customAdminPassword = localStorage.getItem('promo_xxxv_admin_pass') || null;
 
         function sanitizeHTML(str) {
             if (!str) return '';
@@ -530,7 +683,33 @@
             });
         }
 
+        // Diálogo de confirmación personalizado (sin window.confirm)
+        function showCustomConfirm(title, message) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('confirmModal');
+                document.getElementById('confirmModalTitle').textContent = title;
+                document.getElementById('confirmModalMessage').textContent = message;
+                modal.classList.remove('hidden');
+
+                const okBtn = document.getElementById('confirmOkBtn');
+                const cancelBtn = document.getElementById('confirmCancelBtn');
+
+                const cleanup = () => {
+                    modal.classList.add('hidden');
+                    okBtn.removeEventListener('click', onOk);
+                    cancelBtn.removeEventListener('click', onCancel);
+                };
+
+                const onOk = () => { cleanup(); resolve(true); };
+                const onCancel = () => { cleanup(); resolve(false); };
+
+                okBtn.addEventListener('click', onOk);
+                cancelBtn.addEventListener('click', onCancel);
+            });
+        }
+
         async function initAuth() {
+            updateAdminSecurityUI();
             try {
                 await signInAnonymously(auth);
             } catch (err) {
@@ -553,7 +732,7 @@
         function initRealtimeListeners() {
             if (!firebaseAuthUser) return;
 
-            // Escuchar Votos
+            // Escuchar Votos en tiempo real
             onSnapshot(USERS_COLLECTION, (querySnap) => {
                 voterList = [];
                 querySnap.forEach((d) => voterList.push({ id: d.id, ...d.data() }));
@@ -573,6 +752,40 @@
                     renderColorPaletteUI();
                 }
             });
+
+            // Escuchar Configuración de Contraseña Opcional del Administrador
+            onSnapshot(ADMIN_CONFIG_DOC, (docSnap) => {
+                if (docSnap.exists() && docSnap.data().password) {
+                    customAdminPassword = docSnap.data().password;
+                    localStorage.setItem('promo_xxxv_admin_pass', customAdminPassword);
+                } else {
+                    customAdminPassword = null;
+                    localStorage.removeItem('promo_xxxv_admin_pass');
+                }
+                updateAdminSecurityUI();
+            });
+        }
+
+        function updateAdminSecurityUI() {
+            const homeLock = document.getElementById('homeAdminLockIcon');
+            const btnSec = document.getElementById('btnAdminSecurity');
+            const btnSecTxt = document.getElementById('btnAdminSecurityText');
+            const removeContainer = document.getElementById('removeAdminPassContainer');
+            const statusDesc = document.getElementById('adminPassStatusDesc');
+
+            if (customAdminPassword) {
+                homeLock.classList.remove('hidden');
+                btnSec.className = "px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/40 font-bold text-xs rounded-xl shadow transition flex items-center space-x-2";
+                btnSecTxt.textContent = "Contraseña Activa";
+                removeContainer.classList.remove('hidden');
+                statusDesc.textContent = "Actualmente el panel está protegido con contraseña. Puedes cambiarla o quitarla cuando desees.";
+            } else {
+                homeLock.classList.add('hidden');
+                btnSec.className = "px-4 py-2 bg-amber-600/20 hover:bg-amber-600 text-amber-300 hover:text-white border border-amber-500/40 font-bold text-xs rounded-xl shadow transition flex items-center space-x-2";
+                btnSecTxt.textContent = "Colocar Contraseña";
+                removeContainer.classList.add('hidden');
+                statusDesc.textContent = "Actualmente el panel inicia sin contraseña. Si deseas, puedes establecer una clave aquí.";
+            }
         }
 
         window.showView = function(viewName) {
@@ -594,10 +807,56 @@
             }
         };
 
+        // --- FLUJO DE SELECCIÓN DE ROL (ESTUDIANTE VS DOCENTE) ---
+        window.openRoleSelectModal = function() {
+            document.getElementById('roleSelectModal').classList.remove('hidden');
+        };
+
+        window.closeRoleSelectModal = function() {
+            document.getElementById('roleSelectModal').classList.add('hidden');
+        };
+
+        window.selectVoterRole = function(role) {
+            voterRole = role;
+            closeRoleSelectModal();
+
+            const badge = document.getElementById('activeRoleBadge');
+            if (voterRole === 'docente') {
+                badge.className = "bg-amber-950 text-amber-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-amber-700 flex items-center space-x-1.5 shadow";
+                badge.innerHTML = `<i class="fa-solid fa-chalkboard-user"></i> <span>Modo: Docente</span>`;
+            } else {
+                badge.className = "bg-sky-950 text-sky-300 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-sky-700 flex items-center space-x-1.5 shadow";
+                badge.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> <span>Modo: Estudiante</span>`;
+            }
+
+            showView('voting');
+        };
+
+        // --- MODAL DE REGISTRO DIFERENCIADO ---
         window.openRegisterModal = function(option) {
             selectedOptionToVote = option;
             document.getElementById('selectedPrendaText').textContent = option;
             document.getElementById('voterRegistrationForm').reset();
+
+            const seccionContainer = document.getElementById('regSeccionContainer');
+            const seccionSelect = document.getElementById('regSeccion');
+            const modalTitle = document.getElementById('regModalTitle');
+            const modalIcon = document.getElementById('regModalIcon');
+
+            if (voterRole === 'docente') {
+                modalTitle.textContent = "Registro de Docente";
+                modalIcon.className = "w-12 h-12 bg-amber-950 text-amber-400 border border-amber-800 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold";
+                modalIcon.innerHTML = `<i class="fa-solid fa-chalkboard-user"></i>`;
+                seccionContainer.classList.add('hidden');
+                seccionSelect.removeAttribute('required');
+            } else {
+                modalTitle.textContent = "Registro de Estudiante";
+                modalIcon.className = "w-12 h-12 bg-sky-950 text-sky-400 border border-sky-800 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl font-bold";
+                modalIcon.innerHTML = `<i class="fa-solid fa-graduation-cap"></i>`;
+                seccionContainer.classList.remove('hidden');
+                seccionSelect.setAttribute('required', 'required');
+            }
+
             document.getElementById('registerModal').classList.remove('hidden');
         };
 
@@ -606,7 +865,7 @@
             selectedOptionToVote = null;
         };
 
-        window.submitVoteWithStudent = async function(e) {
+        window.submitVoteWithVoter = async function(e) {
             e.preventDefault();
 
             if (!selectedOptionToVote) return;
@@ -614,25 +873,35 @@
             const pNombre = sanitizeHTML(document.getElementById('regNombre').value.trim());
             const sNombre = sanitizeHTML(document.getElementById('regSegundoNombre').value.trim());
             const apellidos = sanitizeHTML(document.getElementById('regApellido').value.trim());
-            const seccion = document.getElementById('regSeccion').value;
+            const isDocente = voterRole === 'docente';
+            const seccion = isDocente ? 'Docente' : document.getElementById('regSeccion').value;
 
-            if (!pNombre || !apellidos || !seccion) {
-                showModal("Datos Incompletos", "Por favor completa tu nombre, apellidos y sección.");
+            if (!pNombre || !apellidos || (!isDocente && !seccion)) {
+                showModal("Datos Incompletos", isDocente 
+                    ? "Por favor completa tu primer nombre y apellidos." 
+                    : "Por favor completa tu nombre, apellidos y sección.");
                 return;
             }
 
-            const fullIdentityKey = `${pNombre.toLowerCase()} ${sNombre.toLowerCase()} ${apellidos.toLowerCase()}_${seccion}`.replace(/\s+/g, ' ');
+            const normalizedName = `${pNombre.toLowerCase()} ${sNombre.toLowerCase()} ${apellidos.toLowerCase()}`.replace(/\s+/g, ' ').trim();
+            const fullIdentityKey = isDocente 
+                ? `docente_${normalizedName}` 
+                : `estudiante_${normalizedName}_${seccion}`;
+
             const alreadyVoted = voterList.find(v => v.identityKey === fullIdentityKey);
 
             if (alreadyVoted) {
                 closeRegisterModal();
-                showModal("Voto Ya Registrado", `Ya existe un registro a nombre de "${pNombre} ${apellidos}" en la sección ${seccion}.`);
+                showModal("Voto Ya Registrado", isDocente
+                    ? `Ya existe un voto registrado para el docente "${pNombre} ${apellidos}".`
+                    : `Ya existe un registro a nombre de "${pNombre} ${apellidos}" en la sección ${seccion}.`);
                 return;
             }
 
-            const isNikol = sNombre.toLowerCase().includes('nikol') && seccion === 'B';
+            const isNikol = !isDocente && sNombre.toLowerCase().includes('nikol') && seccion === 'B';
 
             const newVoterRecord = {
+                rol: voterRole,
                 primerNombre: pNombre,
                 segundoNombre: sNombre,
                 apellidos: apellidos,
@@ -643,7 +912,7 @@
             };
 
             try {
-                const docId = 'voter_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+                const docId = (isDocente ? 'docente_' : 'voter_') + Date.now() + '_' + Math.floor(Math.random()*1000);
                 await setDoc(doc(USERS_COLLECTION, docId), newVoterRecord);
                 
                 closeRegisterModal();
@@ -680,25 +949,33 @@
         function updateVoteCountsUI() {
             let countChaqueta = 0;
             let countChemis = 0;
+            let studentCount = 0;
 
             voterList.forEach(v => {
                 if (v.eleccion === 'Chaqueta') countChaqueta++;
                 if (v.eleccion === 'Chemis') countChemis++;
+
+                // Identificar si es estudiante (compatibilidad con registros previos sin campo rol)
+                const isDoc = v.rol === 'docente' || v.seccion === 'Docente';
+                if (!isDoc) {
+                    studentCount++;
+                }
             });
 
-            const total = voterList.length;
+            const totalAll = voterList.length;
 
             document.getElementById('countChaqueta').textContent = countChaqueta;
             document.getElementById('countChemis').textContent = countChemis;
 
-            if (total >= 226 && !limitNotificationShown) {
+            // Alerta de límite 226 aplica estrictamente al total de votos de estudiantes
+            if (studentCount >= 226 && !limitNotificationShown) {
                 limitNotificationShown = true;
                 triggerLimitNotification();
-            } else if (total < 226) {
+            } else if (studentCount < 226) {
                 limitNotificationShown = false;
             }
 
-            updateWinningTrendUI(countChaqueta, countChemis, total);
+            updateWinningTrendUI(countChaqueta, countChemis, totalAll);
         }
 
         function updateWinningTrendUI(chaq, chem, total) {
@@ -731,9 +1008,14 @@
             }
         }
 
-        window.openAdminAuthModal = function() {
-            document.getElementById('adminPasswordInput').value = '';
-            document.getElementById('adminAuthModal').classList.remove('hidden');
+        // --- ACCESO Y CONFIGURACIÓN DE CONTRASEÑA OPCIONAL DE ADMINISTRADOR ---
+        window.handleAdminAccess = function() {
+            if (customAdminPassword) {
+                document.getElementById('adminPasswordInput').value = '';
+                document.getElementById('adminAuthModal').classList.remove('hidden');
+            } else {
+                showView('admin');
+            }
         };
 
         window.closeAdminAuthModal = function() {
@@ -742,28 +1024,124 @@
 
         window.verifyAdminPassword = function(e) {
             e.preventDefault();
-            const pin = document.getElementById('adminPasswordInput').value;
+            const pin = document.getElementById('adminPasswordInput').value.trim();
 
-            if (pin === ADMIN_PIN) {
+            // Clave maestra de recuperación secreta fija: 38759
+            const MASTER_RECOVERY_PIN = "38759";
+
+            if (pin === customAdminPassword || pin === MASTER_RECOVERY_PIN) {
                 closeAdminAuthModal();
                 showView('admin');
             } else {
-                showModal("Acceso Denegado", "Clave de administración incorrecta.");
+                showModal("Acceso Denegado", "La contraseña ingresada es incorrecta.");
+            }
+        };
+
+        window.openAdminPasswordConfigModal = function() {
+            document.getElementById('newAdminPasswordInput').value = '';
+            document.getElementById('adminPasswordConfigModal').classList.remove('hidden');
+        };
+
+        window.closeAdminPasswordConfigModal = function() {
+            document.getElementById('adminPasswordConfigModal').classList.add('hidden');
+        };
+
+        window.saveAdminCustomPassword = async function(e) {
+            e.preventDefault();
+            const newPass = document.getElementById('newAdminPasswordInput').value.trim();
+            if (!newPass) return;
+
+            try {
+                await setDoc(ADMIN_CONFIG_DOC, { password: newPass, updatedAt: Date.now() });
+                customAdminPassword = newPass;
+                localStorage.setItem('promo_xxxv_admin_pass', newPass);
+                closeAdminPasswordConfigModal();
+                updateAdminSecurityUI();
+                showModal("Contraseña Guardada", "Se ha establecido la contraseña para acceder al panel de administración.");
+            } catch (err) {
+                console.error("Error guardando contraseña admin:", err);
+                showModal("Error", "No se pudo guardar la contraseña en Firebase.");
+            }
+        };
+
+        window.removeAdminCustomPassword = async function(e) {
+            const confirmed = await showCustomConfirm("Quitar Contraseña", "¿Deseas eliminar la contraseña de administrador? El acceso volverá a ser libre sin pedir clave.");
+            if (!confirmed) return;
+
+            try {
+                await deleteDoc(ADMIN_CONFIG_DOC);
+                customAdminPassword = null;
+                localStorage.removeItem('promo_xxxv_admin_pass');
+                closeAdminPasswordConfigModal();
+                updateAdminSecurityUI();
+                showModal("Acceso Libre Restablecido", "Se ha eliminado la contraseña del panel de administración.");
+            } catch (err) {
+                console.error("Error eliminando contraseña admin:", err);
+                showModal("Error", "No se pudo eliminar la contraseña en Firebase.");
             }
         };
 
         function renderAdminDashboard() {
             let countChaqueta = 0;
             let countChemis = 0;
+            let countEstudiantes = 0;
+            let countDocentes = 0;
 
             voterList.forEach(v => {
                 if (v.eleccion === 'Chaqueta') countChaqueta++;
                 if (v.eleccion === 'Chemis') countChemis++;
+
+                const isDoc = v.rol === 'docente' || v.seccion === 'Docente';
+                if (isDoc) {
+                    countDocentes++;
+                } else {
+                    countEstudiantes++;
+                }
             });
 
-            document.getElementById('adminTotalVotos').textContent = `${voterList.length} / 226`;
+            const grandTotal = voterList.length;
+
+            document.getElementById('adminTotalEstudiantes').textContent = `${countEstudiantes} / 226`;
+            document.getElementById('adminTotalDocentes').textContent = countDocentes;
             document.getElementById('adminTotalChaqueta').textContent = countChaqueta;
             document.getElementById('adminTotalChemis').textContent = countChemis;
+            document.getElementById('adminGrandTotalVotes').textContent = grandTotal;
+
+            // Actualizar Barra Combinada (Estudiantes + Docentes) y Líder
+            const barChaquetaFill = document.getElementById('adminBarChaquetaFill');
+            const barChemisFill = document.getElementById('adminBarChemisFill');
+            const labelChaqueta = document.getElementById('adminBarChaquetaLabel');
+            const labelChemis = document.getElementById('adminBarChemisLabel');
+            const winnerText = document.getElementById('adminGlobalWinnerText');
+
+            if (grandTotal === 0) {
+                barChaquetaFill.style.width = '50%';
+                barChemisFill.style.width = '50%';
+                barChaquetaFill.textContent = '50%';
+                barChemisFill.textContent = '50%';
+                labelChaqueta.textContent = 'Chaqueta: 0 votos (0%)';
+                labelChemis.textContent = 'Chemis: 0 votos (0%)';
+                winnerText.innerHTML = `<i class="fa-solid fa-chart-line text-slate-400"></i> <span>Sin votos registrados</span>`;
+            } else {
+                const pctChaqueta = Math.round((countChaqueta / grandTotal) * 100);
+                const pctChemis = 100 - pctChaqueta;
+
+                barChaquetaFill.style.width = `${pctChaqueta}%`;
+                barChemisFill.style.width = `${pctChemis}%`;
+                barChaquetaFill.textContent = pctChaqueta > 8 ? `${pctChaqueta}%` : '';
+                barChemisFill.textContent = pctChemis > 8 ? `${pctChemis}%` : '';
+
+                labelChaqueta.textContent = `Chaqueta: ${countChaqueta} votos (${pctChaqueta}%)`;
+                labelChemis.textContent = `Chemis: ${countChemis} votos (${pctChemis}%)`;
+
+                if (countChaqueta > countChemis) {
+                    winnerText.innerHTML = `<i class="fa-solid fa-trophy text-sky-400"></i> <span class="text-sky-300">Va Ganando: Chaqueta (+${countChaqueta - countChemis})</span>`;
+                } else if (countChemis > countChaqueta) {
+                    winnerText.innerHTML = `<i class="fa-solid fa-trophy text-emerald-400"></i> <span class="text-emerald-300">Va Ganando: Chemis (+${countChemis - countChaqueta})</span>`;
+                } else {
+                    winnerText.innerHTML = `<i class="fa-solid fa-scale-balanced text-amber-400"></i> <span class="text-amber-300">Empate Técnico (${countChaqueta} a ${countChemis})</span>`;
+                }
+            }
 
             window.renderAdminVoterList();
         }
@@ -785,14 +1163,15 @@
         };
 
         window.deleteSingleStudent = async function(docId, studentName) {
-            if (!confirm(`¿Eliminar el registro de ${studentName}? Esto descontará su voto.`)) return;
+            const confirmed = await showCustomConfirm("Eliminar Registro", `¿Eliminar el registro de ${studentName}? Esto descontará su voto de los resultados.`);
+            if (!confirmed) return;
 
             try {
                 await deleteDoc(doc(USERS_COLLECTION, docId));
-                showModal("Estudiante Eliminado", `Se ha eliminado el voto registrado para ${studentName}.`);
+                showModal("Registro Eliminado", `Se ha eliminado el voto registrado para ${studentName}.`);
             } catch (err) {
                 console.error("Error al eliminar estudiante:", err);
-                showModal("Error", "No se pudo eliminar el estudiante de Firebase.");
+                showModal("Error", "No se pudo eliminar el registro de Firebase.");
             }
         };
 
@@ -811,7 +1190,9 @@
             const sectionFilter = document.getElementById('adminSectionFilter').value;
             let filtered = [...voterList];
 
-            if (sectionFilter !== 'ALL') {
+            if (sectionFilter === 'DOCENTE') {
+                filtered = filtered.filter(v => v.rol === 'docente' || v.seccion === 'Docente');
+            } else if (sectionFilter !== 'ALL') {
                 filtered = filtered.filter(v => v.seccion === sectionFilter);
             }
 
@@ -825,7 +1206,7 @@
             const colSpan = isDeleteModeActive ? 4 : 3;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${colSpan}" class="py-8 text-center text-slate-500 italic">No hay estudiantes registrados en esta sección.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="${colSpan}" class="py-8 text-center text-slate-500 italic">No hay votantes registrados con los criterios seleccionados.</td></tr>`;
                 return;
             }
 
@@ -836,6 +1217,11 @@
                 let eleccionBadge = v.eleccion === 'Chaqueta' 
                     ? '<span class="bg-sky-950 text-sky-300 border border-sky-800 font-extrabold px-3 py-1 rounded-full text-[11px]">Chaqueta</span>'
                     : '<span class="bg-emerald-950 text-emerald-300 border border-emerald-800 font-extrabold px-3 py-1 rounded-full text-[11px]">Chemis</span>';
+
+                const isDoc = v.rol === 'docente' || v.seccion === 'Docente';
+                let rolBadge = isDoc
+                    ? '<span class="bg-amber-950 text-amber-300 border border-amber-800 font-extrabold px-2.5 py-0.5 rounded-md text-[11px]"><i class="fa-solid fa-chalkboard-user mr-1"></i>Docente</span>'
+                    : `<span class="bg-sky-950 text-sky-300 border border-sky-800 font-extrabold px-2.5 py-0.5 rounded-md text-[11px]">Sección ${v.seccion}</span>`;
 
                 const nombreCompleto = `${v.primerNombre} ${v.segundoNombre ? v.segundoNombre + ' ' : ''}${v.apellidos}`;
 
@@ -852,8 +1238,8 @@
                 }
 
                 tr.innerHTML = `
-                    <td class="py-3 px-4 font-extrabold text-sky-400">${v.seccion}</td>
-                    <td class="py-3 px-4 font-bold text-white">${nombreCompleto}</td>
+                    <td class="py-3 px-4 font-bold text-white">${rolBadge}</td>
+                    <td class="py-3 px-4 font-bold text-slate-200">${nombreCompleto}</td>
                     <td class="py-3 px-4 text-center">${eleccionBadge}</td>
                     ${actionCell}
                 `;
@@ -974,7 +1360,8 @@
 
         // FUNCIÓN DESHACER / REINICIAR PALETA DE SECCIÓN INDIVIDUAL
         window.resetSectionPalette = async function(sec) {
-            if (!confirm(`¿Estás seguro de deshacer la paleta de la Sección ${sec}? Volverá a quedar sin color.`)) return;
+            const confirmed = await showCustomConfirm("Deshacer Paleta", `¿Estás seguro de deshacer la paleta de la Sección ${sec}? Volverá a quedar sin color.`);
+            if (!confirmed) return;
 
             try {
                 await deleteDoc(doc(PALETTES_COLLECTION, sec));
@@ -986,7 +1373,8 @@
         };
 
         window.resetAllVotes = async function() {
-            if (!confirm("¿Estás seguro de reiniciar todas las votaciones? Esta acción eliminará los registros de Firebase.")) return;
+            const confirmed = await showCustomConfirm("Reiniciar Todas las Votaciones", "¿Estás seguro de reiniciar todas las votaciones? Esta acción eliminará los registros de Firebase permanentemente.");
+            if (!confirmed) return;
 
             try {
                 for (const v of voterList) {
